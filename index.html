@@ -1,0 +1,4353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GammaCrop — Free Crop & Local AI Background Removal for EufyMake E1 UV Printer | No Upload</title>
+  <meta name="description"
+    content="Free online tool with local AI background removal, preset management with one-click sharing, safety margin (positive inset or negative bleeding), rounded-corner cropping, and pixel-perfect DPI exports for EufyMake E1 UV printer fridge magnets. AI runs entirely in your browser — no uploads. Save & share your workflow as presets. Export print-ready transparent PNG at exact DPI.">
+  <meta name="keywords"
+    content="EufyMake E1, UV printer, fridge magnet, crop tool, rounded corners, local AI background removal, remove background, WebGPU, edge refinement, eraser tool, browser AI, transparent PNG, image cropping, EufyMake Studio, 50x70mm magnet, 57x57mm magnet, custom dimensions, UV printing, GammaLand, free tool, no upload, offline, mobile, safety margin, ink overspray, print margin">
+  <meta name="author" content="GammaLand">
+  <link rel="canonical" href="https://tool.gammaland3d.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="GammaCrop — Free Crop & Local AI Background Removal for EufyMake E1">
+  <meta property="og:description"
+    content="Local AI background removal + rounded-corner cropping for UV-printed fridge magnets. AI runs in your browser — no uploads, no limits. Built for EufyMake E1.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tool.gammaland3d.com/">
+  <meta property="og:image" content="https://tool.gammaland3d.com/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="694">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GammaCrop — Free Crop & Local AI Background Removal for EufyMake E1">
+  <meta name="twitter:description"
+    content="Local AI background removal — runs in your browser, not on a server. Free, no upload, works offline. Built for EufyMake E1 magnets.">
+  <meta name="twitter:image" content="https://tool.gammaland3d.com/og-image.jpg">
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "GammaCrop",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "Free browser-based image tool with local AI background removal (MODNet), WebGPU-accelerated, edge refinement, automatic hole filling, manual eraser, safety margin (positive inset or negative bleeding), preset management with one-click URL sharing, zoom & pan, custom dimensions, smart filenames, overflow crop, position controls (Fill, Center, Reset), arrow-key nudge, out-of-bounds edge warning, and rounded-corner cropping for EufyMake E1 UV printer fridge magnets. Save your workflow as named presets and share them via URL — exported filenames automatically use your preset name. AI runs entirely in your browser — no uploads. Export print-ready PNG with embedded DPI metadata. Works on desktop and mobile.",
+  "author": { "@type": "Organization", "name": "GammaLand", "url": "https://www.gammaland3d.com" }
+}
+</script>
+
+  <!-- Structured Data: FAQPage (AEO) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why do I need rounded corners when printing on fridge magnets with EufyMake E1?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard blank fridge magnets (both 50×70mm rectangular and 57×57mm square) have rounded corners, but EufyMake Studio does not support rounded-corner cropping. If you print a square-cornered image onto a rounded-corner magnet, ink oversprays past the edges, creating messy borders and wasted materials. GammaCrop solves this by letting you crop images with matching rounded corners before importing into EufyMake Studio."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I crop images for EufyMake E1 fridge magnets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use GammaCrop (tool.gammaland3d.com): upload your image, select your magnet size (50×70mm, 70×50mm, 57×57mm, or enter a Custom size in mm), adjust the corner radius to match your magnets, and export. The PNG exports at exact DPI with embedded metadata, so when you import it into EufyMake Studio, it auto-sizes perfectly — no manual adjustment needed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can GammaCrop remove image backgrounds for magnet printing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. GammaCrop removes backgrounds with the MODNet AI model (~24MB), which runs entirely in your browser with WebGPU acceleration (or WebAssembly fallback). Unlike EufyMake Studio's built-in remover (which costs credits and uploads to a server), GammaCrop is free, unlimited, and fully private — your images never leave your device. Works on desktop and mobile."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is GammaCrop free? Is my data private?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GammaCrop is 100% free with no sign-up required. Your images are fully private: all processing (including AI background removal) happens locally in your browser, and no images are ever uploaded to a server. Your settings are also fully private: GammaCrop automatically saves your workflow preferences (custom dimensions, corner radius, safety margin, etc.) using your browser's local storage, meaning this data stays strictly on your device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I clean up shadows or artifacts after AI background removal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. After removing the background, GammaCrop shows three edge refinement sliders: Edge Threshold (removes faint shadows), Edge Feather (softens edges with Gaussian blur), and Edge Erode (shrinks the mask to cut shadow residue). Internal holes inside the subject are auto-filled. For stubborn artifacts the AI missed, use the manual Eraser tool to paint them away. All adjustments are instant — no need to re-run the AI model."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What DPI should I use for EufyMake E1 fridge magnet printing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "600 DPI is the recommended baseline for high-quality EufyMake E1 printing. At 600 DPI, a 50×70mm magnet exports at exactly 1180×1652 pixels, which produces flawless photo-quality prints without visible dots. EufyMake Studio recognizes the deeply embedded DPI metadata and automatically sizes the image perfectly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I prevent ink overspray on magnet edges?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "UV printers like the EufyMake E1 can drift slightly between prints, so ink may land past the magnet edge. The cleanest fix is GammaLand's Reusable TPU Overspray Mask, which covers everything around the magnet and catches the excess ink. Export from GammaCrop with a small negative Safety Margin (e.g. -1.0mm) to add bleed for edge-to-edge prints with clean sides."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I save and share my GammaCrop presets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. GammaCrop v1.10 introduces preset management: save your complete workflow (ratio, dimensions, corner radius, safety margin, DPI) as a named preset stored locally. Switch between different magnet setups instantly. You can also generate a shareable URL for any preset to share your exact configuration with others — they can import it with a single click. Exported filenames automatically include the preset name (e.g. photo_lightbox_60x90mm.png), making batch workflows easy to organize."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I precisely position the crop selector in GammaCrop?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "GammaCrop v1.11 adds a full set of position controls: Fill (maximize crop within the image), Center (center on both axes or just horizontally/vertically), Reset (restore initial size, position, and zoom), and arrow-key nudge (1 pixel per press, or 10 pixels with Shift). Nudge buttons are also available in the canvas toolbar. If any edge of the crop selector extends beyond the image, that edge turns yellow as a visual warning — so you can avoid accidental transparent margins before exporting. The yellow warning also accounts for negative safety margin (bleeding), flagging edges where the bleed area would extend past the image."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I get blank ceramic magnets for UV printing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For small trial batches, GammaLand offers Blank Ceramic Magnets on Etsy in packs of 10 (single size) or 5+5 mixed sizes — perfect for testing your workflow. These blanks feature smooth rounded corners that match GammaCrop's default 2mm radius. For larger quantities, bulk packs (60/box) are also available from the EufyMake official store."
+      }
+    }
+  ]
+}
+</script>
+
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    :root {
+      --surface: #111125;
+      --surface-low: #1a1a2e;
+      --surface-high: #28283d;
+      --surface-highest: #333348;
+      --primary: #a9c8fc;
+      --primary-container: #0f3460;
+      --on-primary: #09305c;
+      --outline: #43474f;
+      --text: #e2e0fc;
+      --text-muted: #8d919a;
+      --text-dim: #636680;
+      --sidebar-w: 272px;
+      --header-h: 72px;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      user-select: none;
+    }
+
+    .app-shell {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── FAQ Section ── */
+    .faq-section {
+      position: relative;
+      z-index: 101;
+      margin-top: 0;
+      padding: 60px 24px 80px;
+      background: var(--surface-low);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      user-select: text;
+    }
+
+    .faq-section .faq-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      color: var(--primary);
+      margin-bottom: 32px;
+      letter-spacing: 0.02em;
+    }
+
+    .faq-item {
+      margin-bottom: 24px;
+    }
+
+    .faq-item h3 {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .faq-item p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .faq-item a {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    .faq-item a:hover {
+      color: #ffffff;
+    }
+
+    .faq-img {
+      display: block;
+      max-width: 480px;
+      width: 100%;
+      height: auto;
+      margin: 16px auto 8px auto;
+      border: 1px solid var(--outline);
+      border-radius: 4px;
+    }
+
+    .faq-img-caption {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    /* ── Tooltip ── */
+    .tooltip-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .tooltip-icon {
+      width: 15px;
+      height: 15px;
+      border: 1px solid var(--outline);
+      border-radius: 50%;
+      background: none;
+      color: var(--text-dim);
+      font-size: 10px;
+      font-weight: 600;
+      cursor: help;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 6px;
+      padding: 0;
+      flex-shrink: 0;
+      transition: all 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tooltip-icon:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .tooltip-bubble {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      background: var(--surface-high);
+      border: 1px solid var(--outline);
+      padding: 10px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      text-transform: none;
+      font-weight: 400;
+      letter-spacing: normal;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .tooltip-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--outline);
+    }
+
+    .tooltip-icon:hover+.tooltip-bubble,
+    .tooltip-icon:focus+.tooltip-bubble {
+      display: block;
+    }
+
+    /* ── Header ── */
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .logo a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .logo img {
+      height: 44px;
+      width: auto;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--text-dim);
+      letter-spacing: 0.03em;
+    }
+
+    .help-btn {
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .help-btn:hover {
+      background: var(--surface-high);
+      color: var(--text);
+    }
+
+    /* ── Sidebar ── */
+    aside {
+      position: absolute;
+      left: 0;
+      top: var(--header-h);
+      width: var(--sidebar-w);
+      height: calc(100% - var(--header-h));
+      background: var(--surface-low);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 24px;
+      overflow-y: auto;
+      z-index: 90;
+    }
+
+    .ctrl-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Ratio buttons */
+    .ratio-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .ratio-btn {
+      background: var(--surface-high);
+      border: none;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 12px 0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ratio-btn:hover {
+      background: var(--surface-highest);
+      color: var(--text);
+    }
+
+    .ratio-btn.active {
+      background: var(--primary-container);
+      color: var(--primary);
+      border-left: 2px solid var(--primary);
+    }
+
+    .ratio-size {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    .ratio-btn.active .ratio-size {
+      color: var(--primary);
+      opacity: 0.6;
+    }
+
+    .custom-size-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 2px;
+    }
+
+    .custom-input-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--surface-high);
+      padding: 8px 12px;
+    }
+
+    .custom-input-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-right: 6px;
+    }
+
+    .custom-input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      width: 100%;
+      outline: none;
+      min-width: 0;
+    }
+
+    .custom-input::-webkit-inner-spin-button,
+    .custom-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .custom-input-unit {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    /* Rotation buttons */
+
+    /* Radius slider */
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .slider-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--primary);
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 2px;
+      background: var(--outline);
+      outline: none;
+      margin-top: 8px;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      cursor: pointer;
+    }
+
+    input[type=range]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: none;
+      background: var(--primary);
+      cursor: pointer;
+    }
+
+    /* DPI select */
+    .dpi-select {
+      width: 100%;
+      background: var(--surface-high);
+      border: none;
+      border-bottom: 2px solid var(--outline);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 12px;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .dpi-select:focus {
+      border-bottom-color: var(--primary);
+    }
+
+    .select-wrap {
+      position: relative;
+    }
+
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    /* Preset Buttons */
+    .preset-btn-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .preset-btn {
+      flex: 1;
+      background: var(--surface-high);
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      padding: 8px 0;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .preset-btn:hover {
+      background: var(--surface-highest);
+      color: var(--text);
+    }
+
+    .preset-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+
+    /* Output info */
+    .output-info {
+      background: var(--surface);
+      padding: 14px;
+    }
+
+    .output-info .ctrl-label {
+      margin-bottom: 6px;
+    }
+
+    .output-info .value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--primary);
+    }
+
+    /* Live preview (floating, bottom-right of canvas) */
+    .preview-float {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 8px;
+      background: rgba(17, 17, 37, 0.82);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--outline);
+      border-radius: 6px;
+      pointer-events: none; /* never block crop interaction underneath */
+    }
+
+    .preview-float-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    #previewCanvas {
+      display: block;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Export button */
+    .export-btn {
+      width: 100%;
+      background: var(--primary);
+      border: none;
+      color: var(--on-primary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: auto;
+    }
+
+    .export-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .export-btn:active {
+      transform: scale(0.98);
+    }
+
+    .export-btn:disabled {
+      background: var(--surface-high);
+      color: var(--text-dim);
+      cursor: not-allowed;
+      filter: none;
+      transform: none;
+    }
+
+    /* ── Canvas Area ── */
+    .canvas-area {
+      position: absolute;
+      left: var(--sidebar-w);
+      top: var(--header-h);
+      right: 0;
+      bottom: 40px;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    /* ── Rotate Controls ── */
+    .rotate-controls {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      gap: 2px;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .canvas-area:hover .rotate-controls,
+    .canvas-area:hover .position-controls,
+    .rotate-controls:focus-within {
+      opacity: 1;
+    }
+
+    /* ── Zoom Controls ── */
+    .zoom-controls {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      gap: 2px;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .canvas-area:hover .zoom-controls,
+    .zoom-controls:focus-within {
+      opacity: 1;
+    }
+
+    .zoom-btn {
+      width: 32px;
+      height: 32px;
+      background: rgba(26, 26, 46, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .zoom-btn:hover {
+      background: var(--surface-high);
+      color: var(--text);
+    }
+
+    .zoom-btn:active {
+      transform: scale(0.93);
+    }
+
+    .zoom-level {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      height: 32px;
+      background: rgba(26, 26, 46, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--outline);
+      border-left: none;
+      border-right: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      min-width: 48px;
+      justify-content: center;
+      user-select: none;
+    }
+
+    /* ── Position Controls ── */
+    .position-controls {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      display: flex;
+      gap: 2px;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .canvas-area:hover .position-controls,
+    .position-controls:focus-within {
+      opacity: 1;
+    }
+
+    .pos-btn {
+      height: 32px;
+      padding: 0 10px;
+      background: rgba(26, 26, 46, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.15s;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    .pos-btn:hover {
+      background: var(--surface-high);
+      color: var(--text);
+    }
+
+    .pos-btn:active {
+      transform: scale(0.93);
+    }
+
+    .pos-divider {
+      width: 1px;
+      height: 32px;
+      background: var(--outline);
+      margin: 0 4px;
+    }
+
+    .nudge-group {
+      display: flex;
+      gap: 1px;
+    }
+
+    .nudge-btn {
+      width: 28px;
+      height: 32px;
+      background: rgba(26, 26, 46, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      padding: 0;
+    }
+
+    .nudge-btn:hover {
+      background: var(--surface-high);
+      color: var(--text);
+    }
+
+    .nudge-btn:active {
+      transform: scale(0.9);
+    }
+
+    /* ── Drop Zone ── */
+    .drop-zone {
+      width: 70%;
+      max-width: 640px;
+      aspect-ratio: 4 / 3;
+      border: 2px dashed var(--outline);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.drag-over {
+      border-color: var(--primary);
+      background: rgba(169, 200, 252, 0.03);
+    }
+
+    .drop-zone svg {
+      width: 56px;
+      height: 56px;
+      fill: var(--text-dim);
+      transition: transform 0.3s;
+    }
+
+    .drop-zone:hover svg,
+    .drop-zone.drag-over svg {
+      fill: var(--primary);
+      transform: scale(1.1);
+    }
+
+    .drop-zone h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+
+    .drop-zone p {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .drop-zone .formats {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-top: 8px;
+    }
+
+    /* ── Swap Image Button ── */
+    .swap-btn {
+      background: var(--surface-high);
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.03em;
+      padding: 8px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+      z-index: 10;
+    }
+
+    .swap-btn:hover {
+      background: var(--surface-highest);
+      color: var(--text);
+    }
+
+    /* Eraser controls */
+    .eraser-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .eraser-btn {
+      width: 100%;
+      background: var(--surface-high);
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      padding: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .eraser-btn:hover {
+      background: var(--surface-highest);
+      color: var(--text);
+    }
+
+    .eraser-btn.active {
+      background: var(--primary-container);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .eraser-size-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .eraser-size-wrap input[type=range] {
+      flex: 1;
+      margin-top: 0;
+    }
+
+    .eraser-cursor {
+      position: fixed;
+      border: 2px solid rgba(169, 200, 252, 0.7);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 200;
+      display: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ── BG Removal ── */
+    .bg-btn {
+      width: 100%;
+      background: var(--surface-high);
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .bg-btn:hover:not(:disabled) {
+      background: var(--surface-highest);
+      color: var(--text);
+    }
+
+    .bg-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .bg-btn.bg-restore {
+      margin-top: 4px;
+      border-style: dashed;
+      font-size: 12px;
+      padding: 8px;
+    }
+
+    .bg-progress {
+      margin-top: 8px;
+      background: var(--surface);
+      height: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bg-progress-bar {
+      height: 100%;
+      background: var(--primary-container);
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .bg-progress-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Mode Toggle */
+    .mode-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-bottom: 8px;
+      background: var(--outline);
+      padding: 1px;
+    }
+
+    .mode-btn {
+      background: var(--surface-high);
+      border: none;
+      color: var(--text-dim);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 6px 0;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.15s;
+    }
+
+    .mode-btn:hover {
+      color: var(--text-muted);
+    }
+
+    .mode-btn.active {
+      background: var(--primary-container);
+      color: var(--primary);
+    }
+
+    /* Unavailable mode: greyed out, explains why on hover/focus */
+    .mode-btn.mode-off {
+      position: relative;
+      color: color-mix(in srgb, var(--text-dim) 40%, transparent);
+      cursor: not-allowed;
+    }
+
+    .mode-btn.mode-off:hover {
+      color: color-mix(in srgb, var(--text-dim) 40%, transparent);
+    }
+
+    .mode-btn.mode-off::after {
+      content: attr(data-tip);
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      width: 220px;
+      padding: 8px 10px;
+      background: var(--surface);
+      border: 1px solid var(--outline);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.5;
+      text-align: left;
+      text-transform: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+      z-index: 20;
+    }
+
+    .mode-btn.mode-off:hover::after,
+    .mode-btn.mode-off:focus-visible::after {
+      opacity: 1;
+    }
+
+    .mode-info {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: absolute;
+      bottom: 0;
+      left: var(--sidebar-w);
+      right: 0;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 20px;
+      gap: 16px;
+      background: var(--surface);
+      z-index: 90;
+    }
+
+    footer span,
+    footer a {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    footer span {
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: underline;
+      text-decoration-color: var(--outline);
+      transition: all 0.15s;
+    }
+
+    footer a:hover {
+      color: var(--primary);
+      text-decoration-color: var(--primary);
+    }
+
+    /* ── Help Modal ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .modal {
+      background: var(--surface-low);
+      padding: 32px;
+      max-width: 480px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      user-select: text;
+    }
+
+    .modal h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .modal p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .modal ol {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    .modal .close-btn {
+      margin-top: 20px;
+      background: var(--surface-high);
+      border: none;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 10px 24px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .modal .close-btn:hover {
+      background: var(--surface-highest);
+    }
+
+    .modal .modal-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-high);
+      color: var(--text);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .modal .modal-btn:hover {
+      background: var(--surface-highest);
+    }
+    
+    .modal .modal-btn.primary {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    
+    .modal .modal-btn.primary:hover {
+      background: #89b4fc;
+    }
+
+    /* ── Changelog ── */
+    .changelog-entry {
+      margin-bottom: 16px;
+    }
+
+    .changelog-entry h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .changelog-entry ul {
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .changelog-entry li {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .changelog-ba {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 10px 0 4px;
+    }
+
+    .changelog-ba figure {
+      margin: 0;
+    }
+
+    .changelog-ba img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .changelog-ba figcaption {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 4px;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── Mobile Layout ── */
+    @media (max-width: 768px) {
+      body {
+        height: auto;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .app-shell {
+        position: relative;
+        height: auto;
+        overflow: visible;
+        display: contents;
+      }
+
+      .faq-section {
+        order: 11;
+        margin-top: 0;
+        border-top: 1px solid var(--outline);
+      }
+
+      footer {
+        order: 12 !important;
+      }
+
+      header {
+        order: 1;
+        position: relative;
+        height: auto;
+        padding: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .header-right {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .help-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+      }
+
+      .tagline {
+        display: none;
+      }
+
+      #swapBtn {
+        display: none !important;
+      }
+
+      aside {
+        display: contents;
+      }
+
+      aside>* {
+        background: var(--surface-low);
+        padding: 12px 16px;
+      }
+
+      aside> :first-child {
+        padding-top: 24px;
+      }
+
+      aside>.export-btn {
+        margin: 16px;
+        width: calc(100% - 32px);
+        align-self: stretch;
+        padding: 16px;
+      }
+
+      /* Ordering controls */
+      aside> :nth-child(1) {
+        order: 2;
+      }
+
+      /* Background */
+      aside> :nth-child(2) {
+        order: 3;
+      }
+
+      /* Ratio */
+      aside> :nth-child(3) {
+        order: 4;
+      }
+
+      /* Radius */
+      aside> :nth-child(4) {
+        order: 5;
+        padding-bottom: 24px;
+      }
+
+      /* Safety Margin */
+
+      .canvas-area {
+        order: 6;
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 40vh;
+        /* Shorter to allow Ratio controls to be seen immediately */
+        border-top: 1px solid var(--surface-high);
+        border-bottom: 1px solid var(--surface-high);
+        background: var(--surface);
+      }
+
+      aside> :nth-child(5) {
+        order: 7;
+      }
+
+      /* DPI */
+      aside> :nth-child(6) {
+        order: 8;
+      }
+
+      /* Output Resolution */
+      aside> :nth-child(7) {
+        order: 9;
+      }
+
+      /* Export Button */
+      aside> :nth-child(8) {
+        order: 10;
+      }
+
+      /* Guide Link */
+
+      footer {
+        order: 11;
+        position: relative;
+        left: 0;
+        width: 100%;
+        justify-content: center;
+        padding: 16px 0 24px 0;
+        height: auto;
+        background: transparent;
+      }
+
+      .edge-controls {
+        display: none !important;
+      }
+    }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface-low);
+      border: 1px solid var(--outline);
+      padding: 14px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      z-index: 150;
+      max-width: 480px;
+      animation: toastIn 0.3s ease, toastOut 0.4s ease 5.6s forwards;
+    }
+
+    .toast .toast-icon {
+      color: #4ade80;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .toast .toast-text {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .toast .toast-text strong {
+      color: var(--text);
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    @keyframes toastOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app-shell">
+    <!-- Header -->
+    <header>
+      <div class="header-left">
+        <h1 class="logo"><a href="https://www.gammaland3d.com/" target="_blank" rel="noopener"
+            title="GammaLand Home"><img src="gl-brand-dark-72px.png" alt="GammaLand"></a><a href=".">GammaCrop</a></h1>
+        <span class="tagline">Free crop & local AI background removal for EufyMake E1 UV Printer</span>
+      </div>
+      <button class="swap-btn hidden" id="swapBtn" title="Change image">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M19 8l-4-4m0 0L11 8m4-4v12M5 16l4 4m0 0l4-4m-4 4V4" stroke="currentColor" stroke-width="2"
+            fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Change Image
+      </button>
+      <div class="header-right"
+        style="display: flex; gap: 16px; align-items: center; flex-shrink: 0; margin-left: 16px;">
+        <button class="help-btn" id="helpBtn" title="Help">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside>
+      <!-- Background Removal -->
+      <div class="ctrl-group">
+        <div class="ctrl-label collapsible-header" id="bgToggleHeader" style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;" title="Click to collapse/expand">
+          Background Removal AI
+          <span id="bgToggleIcon" style="transition: transform 0.2s; font-size: 10px; transform: rotate(-90deg);">▼</span>
+        </div>
+        <div id="aiControlsWrapper" style="display: none;">
+          <div class="ai-controls">
+            <div class="mode-toggle" id="bgModeToggle">
+              <button class="mode-btn active" data-mode="fast"
+                title="MODNet: Fast, optimized for portraits (~24MB)">Fast</button>
+              <button class="mode-btn mode-off" data-mode="hd" aria-disabled="true"
+                data-tip="HD mode is paused. Its model (RMBG-1.4) is licensed for non-commercial use only, and the license-friendly alternatives are too heavy (200MB+) to run well in the browser yet. Fast mode still runs 100% locally.">HD</button>
+            </div>
+            <div class="mode-info" id="modeInfo">MODNet (~24MB) • Fast, portrait-optimized</div>
+
+            <button class="bg-btn" id="bgRemoveBtn" disabled>✂ Remove Background</button>
+            <button class="bg-btn bg-restore hidden" id="bgRestoreBtn">↩ Restore Original</button>
+
+            <!-- Edge refinement controls -->
+            <div class="edge-controls hidden" id="edgeControls">
+              <div class="slider-header" style="margin-top:12px">
+                <div class="ctrl-label" style="margin-bottom:0">Edge Threshold</div>
+                <span class="slider-value" id="thresholdValue">30</span>
+              </div>
+              <input type="range" id="thresholdSlider" min="0" max="128" value="30"
+                title="Cut soft edges: pixels below this alpha become fully transparent">
+
+              <div class="slider-header" style="margin-top:10px">
+                <div class="ctrl-label" style="margin-bottom:0">Edge Feather</div>
+                <span class="slider-value" id="featherValue">1 px</span>
+              </div>
+              <input type="range" id="featherSlider" min="0" max="10" value="1"
+                title="Blur the mask edge for smoother transitions">
+
+              <div class="slider-header" style="margin-top:10px">
+                <div class="ctrl-label" style="margin-bottom:0">Edge Erode</div>
+                <span class="slider-value" id="erodeValue">2 px</span>
+              </div>
+              <input type="range" id="erodeSlider" min="0" max="5" value="2"
+                title="Shrink the mask to remove shadow residue at edges">
+
+              <!-- Manual eraser -->
+              <div class="slider-header" style="margin-top:12px">
+                <div class="ctrl-label" style="margin-bottom:0">Eraser</div>
+              </div>
+              <div class="eraser-row">
+                <button class="eraser-btn" id="eraserToggle">Eraser Off</button>
+                <div class="eraser-size-wrap">
+                  <input type="range" id="eraserSize" min="5" max="80" value="50">
+                  <span class="slider-value" id="eraserSizeValue">50 px</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-progress hidden" id="bgProgress">
+              <div class="bg-progress-bar" id="bgProgressBar"></div>
+              <span class="bg-progress-text" id="bgProgressText">Loading model…</span>
+            </div>
+
+            <div class="mobile-bg-notice hidden" id="mobileNotice">
+              <div
+                style="padding: 10px; background: rgba(169, 200, 252, 0.05); border: 1px solid var(--primary-container); border-radius: 4px; margin-top: 8px;">
+                <div style="font-size: 10px; color: var(--primary); font-weight: 700; text-align: center;">🚀 WEBGPU
+                  ACCELERATED</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presets -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">Presets</div>
+        <div class="select-wrap">
+          <select class="dpi-select" id="presetSelect">
+            <option value="default">Eufy E1 Magnet (Default)</option>
+          </select>
+        </div>
+        <div class="preset-btn-row">
+          <button class="preset-btn" id="savePresetBtn">Save</button>
+          <button class="preset-btn" id="sharePresetBtn">Share</button>
+          <button class="preset-btn" id="deletePresetBtn">Delete</button>
+        </div>
+      </div>
+
+      <!-- Ratio -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">Selected Ratio</div>
+        <div class="ratio-row" id="ratioRow">
+          <button class="ratio-btn" data-ratio="5:7">5:7<span class="ratio-size">50×70mm</span></button>
+          <button class="ratio-btn" data-ratio="7:5">7:5<span class="ratio-size">70×50mm</span></button>
+          <button class="ratio-btn" data-ratio="1:1">1:1<span class="ratio-size">57×57mm</span></button>
+          <button class="ratio-btn" data-ratio="custom">Custom<span class="ratio-size">Size</span></button>
+        </div>
+        <div class="custom-size-row hidden" id="customSizeRow">
+          <div class="custom-input-wrap">
+            <span class="custom-input-label">W:</span>
+            <input type="number" id="customWidth" class="custom-input" value="60" min="10" max="200" step="0.1"
+              title="Width (mm)">
+            <span class="custom-input-unit">mm</span>
+          </div>
+          <div class="custom-input-wrap">
+            <span class="custom-input-label">H:</span>
+            <input type="number" id="customHeight" class="custom-input" value="60" min="10" max="200" step="0.1"
+              title="Height (mm)">
+            <span class="custom-input-unit">mm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Radius -->
+      <div class="ctrl-group">
+        <div class="slider-header">
+          <div class="ctrl-label" style="margin-bottom:0">Radius</div>
+          <span class="slider-value" id="radiusValue">2.0 mm</span>
+        </div>
+        <input type="range" id="radiusSlider" min="0" max="50" value="20">
+      </div>
+
+      <!-- Safety Margin -->
+      <div class="ctrl-group">
+        <div class="slider-header">
+          <div class="ctrl-label" style="margin-bottom:0;display:flex;align-items:center">
+            Safety Margin
+            <span class="tooltip-wrap">
+              <button class="tooltip-icon" tabindex="0" aria-label="Safety Margin help">?</button>
+              <span class="tooltip-bubble">Default <strong>0</strong> = exact magnet size. Negative (e.g. <strong>-1.0mm</strong>)
+                adds bleed for edge-to-edge prints &mdash; pair with a TPU overspray mask. Positive adds a transparent
+                inner border.</span>
+            </span>
+          </div>
+          <span class="slider-value" id="insetValue">0.0 mm</span>
+        </div>
+        <input type="range" id="insetSlider" min="-10" max="10" value="0"
+          title="Margin (mm). Positive: transparent inner border. Negative: bleed (image expands outward).">
+      </div>
+
+      <!-- DPI -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">DPI</div>
+        <div class="select-wrap">
+          <select class="dpi-select" id="dpiSelect">
+            <option value="300">300</option>
+            <option value="600" selected>600</option>
+            <option value="720">720</option>
+            <option value="1440">1440</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Output dimensions -->
+      <div class="output-info">
+        <div class="ctrl-label">Output Resolution</div>
+        <div class="value" id="outputSize">— × — px</div>
+      </div>
+
+      <!-- Export -->
+      <button class="export-btn" id="exportBtn" disabled>Export PNG</button>
+    </aside>
+
+    <!-- Canvas Area -->
+    <div class="canvas-area" id="canvasArea">
+      <!-- Rotate controls -->
+      <div class="rotate-controls hidden" id="rotateControls">
+        <button class="zoom-btn" id="rotateCCW" title="Rotate left 90°">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor"
+              d="M7.11 8.53L5.7 7.11C4.8 8.27 4.24 9.61 4.07 11h2.02c.14-.87.49-1.72 1.02-2.47zM6.09 13H4.07c.17 1.39.72 2.73 1.62 3.89l1.41-1.42c-.52-.75-.87-1.59-1.01-2.47zM7.1 18.32c1.16.9 2.51 1.44 3.9 1.61V17.9c-.87-.15-1.71-.49-2.46-1.03L7.1 18.32zM13 4.07V1L8.45 5.55 13 10V6.09c2.84.48 5 2.94 5 5.91s-2.16 5.43-5 5.91v2.02c3.95-.49 7-3.85 7-7.93s-3.05-7.44-7-7.93z" />
+          </svg>
+        </button>
+        <button class="zoom-btn" id="rotateCW" title="Rotate right 90°">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor"
+              d="M15.55 5.55L11 1v3.07C7.06 4.56 4 7.92 4 12s3.05 7.44 7 7.93v-2.02c-2.84-.48-5-2.94-5-5.91s2.16-5.43 5-5.91V10l4.55-4.45zM19.93 11c-.17-1.39-.72-2.73-1.62-3.89l-1.42 1.42c.54.75.88 1.6 1.02 2.47h2.02zM13 17.9v2.02c1.39-.17 2.74-.71 3.9-1.61l-1.44-1.44c-.75.54-1.59.89-2.46 1.03zM16.89 15.48l1.42 1.41c.9-1.16 1.45-2.5 1.62-3.89h-2.02c-.14.87-.48 1.72-1.02 2.48z" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Zoom controls -->
+      <div class="zoom-controls hidden" id="zoomControls">
+        <button class="zoom-btn" id="zoomOut" title="Zoom out (Ctrl −)">−</button>
+        <span class="zoom-level" id="zoomLevel">FIT</span>
+        <button class="zoom-btn" id="zoomIn" title="Zoom in (Ctrl +)">+</button>
+        <button class="zoom-btn" id="zoomFit" title="Fit to screen (Ctrl 0)"
+          style="margin-left:4px;font-size:12px">⊡</button>
+      </div>
+
+      <!-- Position controls -->
+      <div class="position-controls hidden" id="positionControls">
+        <button class="pos-btn" id="posFill" title="Fill — maximize crop within image">⊞ Fill</button>
+        <button class="pos-btn" id="posCenter" title="Center crop on image">◎ Center</button>
+        <button class="pos-btn" id="posCenterX" title="Center horizontally only">↔ Center H</button>
+        <button class="pos-btn" id="posCenterY" title="Center vertically only">↕ Center V</button>
+        <button class="pos-btn" id="posReset" title="Reset to initial size &amp; position">↺ Reset</button>
+        <div class="pos-divider"></div>
+        <div class="nudge-group">
+          <button class="nudge-btn" id="nudgeLeft" title="Move left 1px (← key, Shift=10px)">←</button>
+          <button class="nudge-btn" id="nudgeDown" title="Move down 1px (↓ key, Shift=10px)">↓</button>
+          <button class="nudge-btn" id="nudgeUp" title="Move up 1px (↑ key, Shift=10px)">↑</button>
+          <button class="nudge-btn" id="nudgeRight" title="Move right 1px (→ key, Shift=10px)">→</button>
+        </div>
+      </div>
+
+      <!-- Drop zone (empty state) -->
+      <div class="drop-zone" id="dropZone">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z" />
+        </svg>
+        <h3>Drop Image Here</h3>
+        <p>or click to browse local files</p>
+        <div class="formats">Supported: PNG, JPG, WEBP</div>
+      </div>
+      <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp" style="display:none">
+
+      <!-- Canvas (loaded state) -->
+      <canvas id="canvas" class="hidden"></canvas>
+
+      <!-- Live preview (floating, bottom-right) -->
+      <div class="preview-float hidden" id="previewFloat">
+        <span class="preview-float-label">Preview</span>
+        <canvas id="previewCanvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <a href="https://www.gammaland3d.com/" target="_blank" rel="noopener">Made by GammaLand</a>
+      <a href="https://www.gammaland3d.com/blog/" target="_blank" rel="noopener">Dev Blog</a>
+      <a href="#" id="changelogLink">Changelog</a>
+      <a href="https://github.com/gammaland/gammacrop" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGCfO2QvqrzZsxtcN8E9GVAlWumloUkhm5fYD1-2dNA3ikoQ/viewform"
+        target="_blank" rel="noopener">Send Feedback</a>
+    </footer>
+  </div><!-- /app-shell -->
+
+  <!-- FAQ Section (visible to search engines) -->
+  <section class="faq-section">
+    <div class="faq-inner">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <h3>Why do I need rounded corners when printing on fridge magnets with EufyMake E1?</h3>
+        <p>Standard blank fridge magnets (both 50&times;70mm rectangular and 57&times;57mm square) have rounded corners,
+          but EufyMake Studio only crops to sharp rectangles. If you print a square-cornered image onto a rounded-corner
+          magnet, ink oversprays past the edges, creating messy borders and wasted materials. GammaCrop solves this by
+          letting you crop images with matching rounded corners before importing into EufyMake Studio.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How do I crop images for EufyMake E1 fridge magnets?</h3>
+        <p>Upload your image to GammaCrop, select your magnet size (50&times;70mm, 70&times;50mm, 57&times;57mm, or
+          enter a Custom size in mm), adjust the corner radius to match your magnets, and export. The PNG exports at
+          exact DPI with embedded metadata, so when you import it into EufyMake Studio, it auto-sizes perfectly &mdash;
+          no manual adjustment needed.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Can GammaCrop remove image backgrounds for magnet printing?</h3>
+        <p>Yes. GammaCrop removes backgrounds with the MODNet AI model (~24MB), which runs entirely in your
+          browser with WebGPU acceleration (or WebAssembly fallback). The previous HD mode is paused because its model
+          is licensed for non-commercial use only. Unlike EufyMake Studio&rsquo;s built-in remover
+          (which costs credits and uploads to a server), GammaCrop is free, unlimited, and fully private &mdash; your
+          images never leave your device. Works on desktop and mobile.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Is GammaCrop free? Is my data private?</h3>
+        <p>GammaCrop is 100% free with no sign-up required. <strong>Your images are fully private</strong>: all
+          processing (including AI background removal) happens locally in your browser, and no images are ever uploaded
+          to a server. <strong>Your settings are fully private</strong>: GammaCrop automatically saves your workflow
+          preferences (custom dimensions, corner radius, safety margin, etc.) using your browser's local storage
+          (<code>localStorage</code>). This data stays strictly on your device.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How do I clean up shadows or artifacts after AI background removal?</h3>
+        <p>After removing the background, GammaCrop shows three edge refinement sliders: Edge Threshold (removes faint
+          shadows), Edge Feather (softens edges with Gaussian blur), and Edge Erode (shrinks the mask to cut shadow
+          residue). Internal holes inside the subject are auto-filled. For stubborn artifacts the AI missed, use the
+          manual Eraser tool to paint them away. All adjustments are instant &mdash; no need to re-run the AI model.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>What DPI should I use for EufyMake E1 fridge magnet printing?</h3>
+        <p>600 DPI is the recommended baseline for high-quality EufyMake E1 printing. At 600 DPI, a 50&times;70mm magnet
+          exports at exactly 1180&times;1652 pixels, which produces flawless photo-quality prints without visible dots.
+          EufyMake Studio recognizes the embedded DPI metadata and automatically sizes the image perfectly.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>How do I prevent ink overspray on magnet edges?</h3>
+        <p>UV printers like the EufyMake E1 can drift slightly between prints, so ink may land a fraction of a
+          millimeter past the magnet edge and leave residue on the sides (see image below).</p>
+        <img class="faq-img" src="overspray-web.webp"
+          alt="Ink overspray on magnet edge — the dark ink leaked past the magnet surface due to slight alignment drift"
+          width="800" height="493" loading="lazy">
+        <div class="faq-img-caption">Alignment drift causes ink to land on the magnet edges.</div>
+
+        <p style="margin-top:16px;">The cleanest fix is a <a href="https://gammaland.etsy.com/listing/4503874765/reusable-tpu-overspray-mask-for-ceramic" target="_blank" rel="noopener">Reusable TPU Overspray Mask</a>: it covers everything around the magnet and catches the excess ink. Export with a small negative Safety Margin (e.g. <strong>-1.0mm</strong>) to add bleed, and you get edge-to-edge prints with clean sides.</p>
+        <img class="faq-img" src="tpu-mask.webp"
+          alt="TPU Overspray Mask keeping magnet edges clean despite heavy overspray bleeding"
+          width="1024" height="652" loading="lazy" style="margin-top:12px;">
+        <div class="faq-img-caption">Printing with bleed using a TPU mask. The overspray is caught by the mask, leaving the magnet edge clean.</div>
+      </div>
+
+      <div class="faq-item">
+        <h3>How do I precisely position the crop selector?</h3>
+        <p>GammaCrop v1.11 adds a position controls toolbar (visible when hovering over the canvas) with five quick actions:
+          <strong>Fill</strong> maximizes the crop to cover as much of the image as possible while maintaining the aspect ratio.
+          <strong>Center</strong> centers the crop on both axes (or use <strong>Center H</strong> / <strong>Center V</strong> for a single axis).
+          <strong>Reset</strong> restores the initial crop size, position, and zoom level.
+          You can also <strong>nudge</strong> the crop 1 pixel at a time using arrow keys (&uarr;&darr;&larr;&rarr;), or hold <strong>Shift</strong> for 10-pixel jumps. Nudge buttons are also available in the toolbar for mouse/touch users.</p>
+        <p style="margin-top:12px;">If any edge of the crop extends beyond the image, that edge turns <strong style="color:#ffd23c;">yellow</strong> as a visual warning &mdash; helping you avoid accidental transparent margins before exporting. The warning also accounts for negative safety margin (bleeding): even if the crop box itself is within the image, the bleed area extending beyond will trigger the yellow highlight.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Where can I get blank ceramic magnets for UV printing?</h3>
+        <p>If you want to try a small batch first, our <a href="https://gammaland.etsy.com/listing/4505895738/blank-ceramic-magnets-for-uv-printing" target="_blank" rel="noopener">Blank Ceramic Magnets on Etsy</a> come in trial packs of 10 pieces (single size) or 5+5 mixed sizes &mdash; perfect for testing your workflow before committing. These blanks feature smooth rounded corners that match GammaCrop's default 2mm radius. For larger quantities, bulk packs (60/box) are also available from the EufyMake official store.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Help Modal -->
+  <div class="modal-overlay hidden" id="helpModal">
+    <div class="modal">
+      <h2>Why GammaCrop?</h2>
+      <p>EufyMake Studio only crops to sharp rectangles — but magnets have rounded corners. GammaCrop gives you
+        precise rounded-corner cropping, free AI background removal (runs locally, no credits), and pixel-perfect DPI exports that auto-size in Studio.</p>
+      <h2>Quick Start</h2>
+      <ol>
+        <li>Drop an image → pick your magnet size</li>
+        <li><strong>Optional:</strong> Remove background with AI</li>
+        <li>Adjust corner radius & safety margin</li>
+        <li><strong>Export PNG</strong> → import into Studio → done!</li>
+      </ol>
+      <p style="margin-top:12px; padding:10px; background:var(--surface); font-size:12px;">
+        <strong style="color:var(--primary);">100% Free & Private</strong> — everything runs in your browser. No uploads, no sign-up.
+      </p>
+      <div style="margin-top:12px; padding:14px; background:var(--surface); font-size:12px; line-height:1.8;">
+        <strong style="color:var(--text); display:block; margin-bottom:8px;">🛒 EufyMake E1 Accessories</strong>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div>🧲 <a href="https://gammaland.etsy.com/listing/4505895738/blank-ceramic-magnets-for-uv-printing" target="_blank" rel="noopener" style="color:var(--primary); text-decoration:underline;">Blank Ceramic Magnets</a> — UV-ready blanks with rounded corners</div>
+          <div>🛡️ <a href="https://gammaland.etsy.com/listing/4503874765/reusable-tpu-overspray-mask-for-ceramic" target="_blank" rel="noopener" style="color:var(--primary); text-decoration:underline;">TPU Overspray Mask</a> — edge-to-edge bleeding, clean edges</div>
+        </div>
+      </div>
+      <button class="close-btn" id="closeHelp">Close</button>
+    </div>
+  </div>
+
+  <!-- Changelog Modal -->
+  <div class="modal-overlay hidden" id="changelogModal">
+    <div class="modal">
+      <h2>Changelog</h2>
+      <div class="changelog">
+        <div class="changelog-entry">
+          <h3>v1.13 &mdash; October 6, 2026</h3>
+          <ul>
+            <li><strong>Safety Margin Defaults to 0</strong> &mdash; Exports now match the exact magnet size by default. For edge-to-edge prints, use a negative margin (bleed) together with a TPU overspray mask.</li>
+            <li><strong>HD Mode Paused</strong> &mdash; The HD background remover (RMBG-1.4) is turned off because its model license is non-commercial only. Fast mode (MODNet) is unchanged.</li>
+            <li><strong>Open Source</strong> &mdash; GammaCrop&rsquo;s source code is now public on GitHub under a noncommercial license.</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.12 &mdash; June 24, 2026</h3>
+          <p style="font-size:12px; color:var(--text-dim); margin-bottom:8px;">Based on community feedback from <a href="https://www.reddit.com/r/eufyMakeOfficial/comments/1t2bon8/comment/omtae8q/" target="_blank" rel="noopener" style="color:var(--primary);">r/eufyMakeOfficial</a> &mdash; thank you!</p>
+          <ul>
+            <li><strong>Live Preview</strong> &mdash; A small preview in the sidebar shows exactly what your exported PNG will look like &mdash; rounded corners, safety margin, and transparent areas included. It updates in real time as you move or resize the crop.</li>
+            <li><strong>Ratio Kept on Drag-and-Drop</strong> &mdash; Dropping a new image onto the canvas now keeps your selected ratio active, so you can reposition the crop right away without re-clicking the ratio. (Previously only the Change Image button preserved it.)</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.11 &mdash; May 20, 2026</h3>
+          <p style="font-size:12px; color:var(--text-dim); margin-bottom:8px;">Based on community feedback from <a href="https://www.reddit.com/r/eufyMakeOfficial/comments/1t2bon8/comment/oml2n4h/" target="_blank" rel="noopener" style="color:var(--primary);">r/eufyMakeOfficial</a> &mdash; thank you!</p>
+          <ul>
+            <li><strong>Preset-Based Filenames</strong> &mdash; Exported files now use the active preset name instead of &ldquo;magnet&rdquo;. For example, a &ldquo;Lightbox&rdquo; preset exports as <code>photo_lightbox_60x90mm.png</code>.</li>
+            <li><strong>Out-of-Bounds Warning</strong> &mdash; Crop border edges that extend beyond the image turn yellow, making it easy to spot accidental transparent margins before exporting.</li>
+            <li><strong>Position Controls</strong> &mdash; New toolbar in the canvas area with Fill (maximize crop within image), Center / Center X / Center Y, and Reset buttons for precise crop placement.</li>
+            <li><strong>Arrow Key Nudge</strong> &mdash; Move the crop selector 1 pixel at a time with arrow keys, or 10 pixels with Shift+arrow. Nudge buttons also available in the canvas toolbar.</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.11.1 &mdash; May 20, 2026</h3>
+          <ul>
+            <li><strong>Reset Now Restores Zoom</strong> &mdash; The Reset button now also resets zoom and pan, returning the view to the initial state instead of only repositioning the crop box.</li>
+            <li><strong>Clearer Button Labels</strong> &mdash; Renamed &ldquo;Cx&rdquo; / &ldquo;Cy&rdquo; to &ldquo;Center H&rdquo; / &ldquo;Center V&rdquo; for better readability.</li>
+            <li><strong>Bleed-Aware Out-of-Bounds Warning</strong> &mdash; When using a negative safety margin (bleeding), the yellow border warning now accounts for the extended export area, not just the visible crop box.</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.10 &mdash; May 16, 2026</h3>
+          <ul>
+            <li><strong>Preset Management</strong> &mdash; Save custom configurations as local presets with unique names. Easily switch between different magnet setups without re-entering parameters.</li>
+            <li><strong>One-Click Sharing</strong> &mdash; Generate a custom URL for any preset to instantly share your exact workflow (ratio, dimensions, radius, margins) with other users.</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.9.2 &mdash; May 11, 2026</h3>
+          <ul>
+            <li><strong>Negative Safety Margin (Bleeding)</strong> &mdash; Safety margin can now be set to negative values (e.g. -1.0mm) to add bleeding. This expands the image slightly beyond the magnet dimensions, ensuring print reaches the edge perfectly.</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.9.1 &mdash; May 8, 2026</h3>
+          <ul>
+            <li><strong>Auto Hole-Fill</strong> &mdash; internal transparent holes inside the subject (e.g. faint
+              patches the AI missed inside a face or body) are now automatically filled. Solves the &ldquo;swiss-cheese
+              mask&rdquo; problem on hand-drawn and complex subjects</li>
+            <li><strong>Softer default edges</strong> &mdash; Edge Feather default raised from 0 to 1px to reduce
+              stair-step aliasing on hard mask edges</li>
+          </ul>
+          <div class="changelog-ba">
+            <figure>
+              <img src="blog-pic/v1.9.1_before.jpg" alt="Before v1.9.1: mask has internal transparent holes"
+                loading="lazy">
+              <figcaption>Before</figcaption>
+            </figure>
+            <figure>
+              <img src="blog-pic/v1.9.1_after.jpg" alt="After v1.9.1: holes auto-filled" loading="lazy">
+              <figcaption>After</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.9 &mdash; May 4, 2026</h3>
+          <ul>
+            <li><strong>Smart Filenames</strong> &mdash; exported files now use the source image name with magnet size,
+              e.g. <code>photo_magnet_50x70mm.png</code>, so batch exports no longer overwrite each other</li>
+            <li><strong>Overflow Crop</strong> &mdash; crop box can now extend beyond the image boundary. Out-of-bounds
+              areas export as transparent, shown with a checkerboard preview</li>
+            <li><strong>Floating Rotate</strong> &mdash; rotation controls moved from the sidebar to a floating overlay
+              on the canvas (top-left), matching the zoom controls style</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.8 &mdash; May 3, 2026</h3>
+          <ul>
+            <li><strong>Custom Dimensions</strong> &mdash; added a "Custom" ratio option. Enter precise width and height
+              in millimeters to support non-standard magnet blanks</li>
+            <li><strong>Persistent Settings</strong> &mdash; all workflow preferences (custom dimensions, selected
+              ratio, corner radius, safety margin, and DPI) now auto-save to your browser and restore instantly on your
+              next visit</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.7 &mdash; May 2, 2026</h3>
+          <ul>
+            <li><strong>Safety Margin</strong> &mdash; configurable transparent margin (default 0.2mm) inward from the
+              crop edge, preventing UV ink from reaching the magnet edge due to alignment drift. Adjustable
+              0&ndash;1.0mm, set to 0 to disable</li>
+            <li><strong>Zoom &amp; Pan</strong> &mdash; zoom in/out with mouse wheel, buttons, or Ctrl +/&minus;/0. Pan
+              by dragging on the canvas. Crop box auto-fits to visible viewport when zoomed in</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.6 — Apr 29, 2026</h3>
+          <ul>
+            <li><strong>Multi-Model AI</strong> — choose between Fast (MODNet, ~24MB) and HD (RMBG-1.4, ~176MB)
+              background removal modes</li>
+            <li><strong>WebGPU Acceleration</strong> — AI inference runs on your GPU for dramatically faster background
+              removal (falls back to WebAssembly on older browsers)</li>
+            <li><strong>Mobile AI Background Removal</strong> — AI background removal now works on phones and tablets
+              (edge refinement remains desktop-only)</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.5 — Apr 27, 2026</h3>
+          <ul>
+            <li><strong>Alignment Guide</strong> — added quick links to our new, step-by-step EufyMake E1 Alignment
+              Guide</li>
+            <li><strong>Mobile Support</strong> — you can now use the crop tool directly on your phone!</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.4 — Apr 23, 2026</h3>
+          <ul>
+            <li><strong>Edge Refinement</strong> — threshold, feather, and erode sliders to clean up AI background
+              removal edges</li>
+            <li><strong>Manual Eraser</strong> — brush tool to paint away stubborn shadows or artifacts</li>
+            <li><strong>Improved workflow</strong> — background removal first, then select ratio to crop</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.3 — Apr 22, 2026</h3>
+          <ul>
+            <li><strong>Local AI Background Removal</strong> — remove image backgrounds with one click. AI model
+              (RMBG-1.4) runs entirely in your browser via WebAssembly — no uploads, no server, no limits</li>
+            <li>Transparent background preview with checkerboard pattern</li>
+            <li>Export PNG with transparent background for clean UV prints</li>
+            <li>Instant toggle between original and background-removed views (cached result)</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.2 — Apr 17, 2026</h3>
+          <ul>
+            <li>Default corner radius updated to 2.0mm</li>
+            <li>Default DPI upgraded to 600 and added 1440 DPI support for optimal EufyMake E1 print quality</li>
+            <li>Optimized DPI metadata to import into EufyMake Studio at exact integer physical dimensions (e.g. exactly
+              50.00×70.00mm) without rounding drift</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.1 — Apr 14, 2026</h3>
+          <ul>
+            <li>Retina/HiDPI display support — sharper image preview on Mac and high-res screens</li>
+            <li>Default corner radius updated to 1.2mm</li>
+            <li>Improved UI readability — larger fonts for controls and footer</li>
+          </ul>
+        </div>
+        <div class="changelog-entry">
+          <h3>v1.0 — Apr 13, 2026</h3>
+          <ul>
+            <li>Initial release</li>
+            <li>Crop images with rounded corners for 50×70mm, 70×50mm, and 57×57mm magnets</li>
+            <li>Export PNG at 300/600/720 DPI with embedded pHYs metadata</li>
+            <li>90° rotation support</li>
+            <li>100% local browser processing — no uploads, no sign-up</li>
+          </ul>
+        </div>
+      </div>
+      <button class="close-btn" id="closeChangelog">Close</button>
+    </div>
+  </div>
+
+  <!-- Save Preset Modal -->
+  <div class="modal-overlay hidden" id="savePresetModal">
+    <div class="modal" style="max-width: 400px; padding: 28px;">
+      <h2 style="font-size: 16px; margin-bottom: 8px;">Save Preset</h2>
+      <p id="savePresetMsg" style="margin-bottom: 24px; font-size: 14px; line-height: 1.5; color: var(--text-muted);">You have unsaved changes to <strong>...</strong></p>
+      
+      <div style="display: flex; flex-direction: column; gap: 0;">
+        <button id="btnUpdatePreset" class="modal-btn primary" style="width: 100%; font-size: 14px; padding: 12px;">Update Existing</button>
+        
+        <div style="display: flex; align-items: center; justify-content: center; margin: 20px 0;">
+          <div style="flex: 1; height: 1px; background: var(--surface-highest);"></div>
+          <span style="padding: 0 12px; font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em;">OR</span>
+          <div style="flex: 1; height: 1px; background: var(--surface-highest);"></div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="newPresetNameInput" placeholder="New preset name..." style="flex: 1; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--outline); background: var(--surface-high); color: var(--text); font-family: inherit; font-size: 13px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--outline)'">
+          <button id="btnSaveNewPreset" class="modal-btn" style="white-space: nowrap;">Save as New</button>
+        </div>
+        
+        <button id="btnCancelSavePreset" class="modal-btn" style="width: 100%; background: transparent; color: var(--text-dim); margin-top: 24px; font-size: 14px;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generic Dialog Modal -->
+  <div class="modal-overlay hidden" id="dialogModal" style="z-index: 10000;">
+    <div class="modal" style="max-width: 400px; padding: 28px;">
+      <h2 id="dialogTitle" style="font-size: 16px; margin-bottom: 8px;">...</h2>
+      <p id="dialogMsg" style="margin-bottom: 24px; font-size: 14px; line-height: 1.5; color: var(--text-muted); word-break: break-word;"></p>
+      
+      <div id="dialogInputContainer" class="hidden" style="margin-bottom: 24px;">
+        <input type="text" id="dialogInput" style="width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--outline); background: var(--surface-high); color: var(--text); font-family: inherit; font-size: 13px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--outline)'">
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px;">
+        <button id="btnDialogCancel" class="modal-btn" style="background: transparent; color: var(--text-dim); font-size: 14px; border: none; padding: 10px 16px;">Cancel</button>
+        <button id="btnDialogConfirm" class="modal-btn primary">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="eraser-cursor" id="eraserCursor"></div>
+
+  <script>
+    // ── Generic Dialog Modal ──
+    function showDialog(options) {
+      return new Promise(resolve => {
+        const modal = document.getElementById('dialogModal');
+        const titleEl = document.getElementById('dialogTitle');
+        const msgEl = document.getElementById('dialogMsg');
+        const inputContainer = document.getElementById('dialogInputContainer');
+        const inputEl = document.getElementById('dialogInput');
+        const btnCancel = document.getElementById('btnDialogCancel');
+        const btnConfirm = document.getElementById('btnDialogConfirm');
+
+        titleEl.textContent = options.title || 'Notification';
+        msgEl.innerHTML = options.message || '';
+        
+        if (options.type === 'prompt') {
+          inputContainer.classList.remove('hidden');
+          inputEl.value = options.defaultValue || '';
+        } else {
+          inputContainer.classList.add('hidden');
+        }
+
+        if (options.type === 'alert') {
+          btnCancel.classList.add('hidden');
+        } else {
+          btnCancel.classList.remove('hidden');
+          btnCancel.textContent = options.cancelText || 'Cancel';
+        }
+        
+        btnConfirm.textContent = options.confirmText || 'OK';
+
+        // Cleanup function
+        const cleanup = () => {
+          modal.classList.add('hidden');
+          // Remove event listeners by cloning
+          btnConfirm.replaceWith(btnConfirm.cloneNode(true));
+          btnCancel.replaceWith(btnCancel.cloneNode(true));
+          inputEl.removeEventListener('keydown', onEnter);
+        };
+
+        const onConfirm = () => {
+          cleanup();
+          if (options.type === 'prompt') {
+            resolve(inputEl.value);
+          } else {
+            resolve(true); // confirm -> true, alert -> true
+          }
+        };
+
+        const onCancel = () => {
+          cleanup();
+          if (options.type === 'prompt') {
+            resolve(null);
+          } else {
+            resolve(false); // confirm -> false
+          }
+        };
+
+        const onEnter = (e) => {
+          if (e.key === 'Enter') onConfirm();
+        };
+
+        // Re-fetch cloned buttons
+        document.getElementById('btnDialogConfirm').addEventListener('click', onConfirm);
+        document.getElementById('btnDialogCancel').addEventListener('click', onCancel);
+        if (options.type === 'prompt') {
+          inputEl.addEventListener('keydown', onEnter);
+        }
+
+        modal.classList.remove('hidden');
+        if (options.type === 'prompt') {
+          inputEl.focus();
+          inputEl.select();
+        } else {
+          document.getElementById('btnDialogConfirm').focus();
+        }
+      });
+    }
+
+    async function customAlert(message, title = 'Notification') {
+      await showDialog({ type: 'alert', title, message });
+    }
+
+    async function customConfirm(message, title = 'Confirm') {
+      return await showDialog({ type: 'confirm', title, message });
+    }
+
+    async function customPrompt(message, defaultValue = '', title = 'Input Required') {
+      return await showDialog({ type: 'prompt', title, message, defaultValue });
+    }
+
+    // ── Configuration ──
+    const RATIOS = { '5:7': 5 / 7, '7:5': 7 / 5, '1:1': 1 };
+    const SIZES = { '5:7': { w: 50, h: 70 }, '7:5': { w: 70, h: 50 }, '1:1': { w: 57, h: 57 } };
+
+    // ── State ──
+    let img = null;
+    let rotatedCanvas = null;
+    let rotation = 0;
+    let ratio = null;
+    let cropActive = false;
+    let cornerRadius = 2.0; // mm
+    let dpi = 600;
+    let edgeInset = 0; // mm — safety margin (transparent inset from edge)
+    let crop = { x: 0, y: 0, w: 0, h: 0 }; // in rotated-image pixel coords
+    let bgRemoved = false;
+    let bgRemovedImg = null; // canvas with transparent background
+    let sourceBaseName = 'magnet'; // base name from uploaded file
+
+    // Display mapping
+    let dm = { scale: 1, dx: 0, dy: 0, dw: 0, dh: 0, baseScale: 1 };
+
+    // Zoom & pan state
+    let zoomFactor = 1;
+    let panX = 0, panY = 0;
+
+    // Interaction state
+    let dragMode = null; // null | 'move' | 'tl' | 'tr' | 'bl' | 'br' | 'pan'
+    let dragStart = { mx: 0, my: 0, cx: 0, cy: 0, cw: 0, ch: 0 };
+
+    // Eraser state (declared early so pointer handlers can reference)
+    let eraserActive = false;
+    let eraserDrawing = false;
+
+    // Presets state
+    let presets = [];
+
+
+    // ── DOM refs ──
+    const canvasEl = document.getElementById('canvas');
+    const ctx = canvasEl.getContext('2d');
+    const canvasArea = document.getElementById('canvasArea');
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const ratioRow = document.getElementById('ratioRow');
+    const radiusSlider = document.getElementById('radiusSlider');
+    const radiusValue = document.getElementById('radiusValue');
+    const dpiSelect = document.getElementById('dpiSelect');
+    const outputSize = document.getElementById('outputSize');
+    const exportBtn = document.getElementById('exportBtn');
+    const customWidthInput = document.getElementById('customWidth');
+    const customHeightInput = document.getElementById('customHeight');
+    const customSizeRow = document.getElementById('customSizeRow');
+    const presetSelect = document.getElementById('presetSelect');
+    const savePresetBtn = document.getElementById('savePresetBtn');
+    const sharePresetBtn = document.getElementById('sharePresetBtn');
+    const deletePresetBtn = document.getElementById('deletePresetBtn');
+    const insetSlider = document.getElementById('insetSlider');
+    const insetValue = document.getElementById('insetValue');
+    const insetToggle = document.getElementById('insetToggle');
+
+    // ── Helpers ──
+    function getCurrentSize() {
+      if (ratio === 'custom') {
+        return { w: parseFloat(customWidthInput.value) || 50, h: parseFloat(customHeightInput.value) || 50 };
+      }
+      return SIZES[ratio];
+    }
+
+    function getCurrentRatio() {
+      if (ratio === 'custom') {
+        const s = getCurrentSize();
+        return s.w / s.h;
+      }
+      return RATIOS[ratio];
+    }
+    function getEffectiveSize() {
+      if (!img) return { w: 0, h: 0 };
+      return (rotation === 90 || rotation === 270)
+        ? { w: img.naturalHeight, h: img.naturalWidth }
+        : { w: img.naturalWidth, h: img.naturalHeight };
+    }
+
+    // ── Presets Implementation ──
+    function loadPresets() {
+      try {
+        const stored = localStorage.getItem('gammacrop_presets');
+        if (stored) {
+          presets = JSON.parse(stored);
+        }
+      } catch (e) {
+        presets = [];
+      }
+      renderPresetsDropdown();
+    }
+
+    function savePresets() {
+      try {
+        localStorage.setItem('gammacrop_presets', JSON.stringify(presets));
+      } catch (e) { }
+    }
+
+    function renderPresetsDropdown() {
+      // Keep only default option
+      presetSelect.innerHTML = '<option value="default">Eufy E1 Magnet (Default)</option>';
+      presets.forEach((p, index) => {
+        const opt = document.createElement('option');
+        opt.value = index;
+        opt.textContent = p.name;
+        presetSelect.appendChild(opt);
+      });
+      // Try to find if current state matches a preset (or default), else select custom. 
+      // But for simplicity, let's just let it be. We update it when they pick.
+    }
+
+    function applyPreset(p) {
+      if (!p) return; // if default, maybe we reset?
+      
+      if (p.ratio) {
+        // Find ratio button and click it only if it is not already active
+        const btn = ratioRow.querySelector(`[data-ratio="${p.ratio}"]`);
+        if (btn && !btn.classList.contains('active')) {
+          btn.click();
+        }
+      } else {
+        // If preset has no ratio, turn off any active ratio
+        const activeBtn = ratioRow.querySelector('.ratio-btn.active');
+        if (activeBtn) activeBtn.click();
+      }
+      
+      if (p.ratio === 'custom') {
+        customWidthInput.value = p.customW;
+        customHeightInput.value = p.customH;
+        // Trigger event
+        customWidthInput.dispatchEvent(new Event('input'));
+      }
+      
+      if (p.radius !== undefined) {
+        radiusSlider.value = p.radius * 10;
+        radiusSlider.dispatchEvent(new Event('input'));
+      }
+      
+      if (p.margin !== undefined) {
+        insetSlider.value = p.margin * 10;
+        insetSlider.dispatchEvent(new Event('input'));
+      }
+      
+      if (p.dpi !== undefined) {
+        if (Array.from(dpiSelect.options).some(o => o.value == p.dpi)) {
+          dpiSelect.value = p.dpi;
+          dpiSelect.dispatchEvent(new Event('change'));
+        }
+      }
+    }
+
+    function buildPresetFromCurrent(name) {
+      const p = {
+        name: name,
+        ratio: ratio,
+        radius: parseFloat(radiusSlider.value) / 10,
+        margin: parseFloat(insetSlider.value) / 10,
+        dpi: parseInt(dpiSelect.value)
+      };
+      if (ratio === 'custom') {
+        p.customW = parseFloat(customWidthInput.value);
+        p.customH = parseFloat(customHeightInput.value);
+      }
+      return p;
+    }
+
+    function checkDirtyState() {
+      const val = presetSelect.value;
+      const isDefault = val === 'default';
+      
+      deletePresetBtn.disabled = isDefault;
+      sharePresetBtn.disabled = isDefault;
+
+      // Reset all option texts first to clear any stale asterisks
+      Array.from(presetSelect.options).forEach(opt => {
+        if (opt.value === 'default') {
+          opt.textContent = 'Eufy E1 Magnet (Default)';
+        } else {
+          const optIdx = parseInt(opt.value);
+          if (!isNaN(optIdx) && optIdx >= 0 && optIdx < presets.length) {
+            opt.textContent = presets[optIdx].name;
+          }
+        }
+      });
+
+      if (isDefault) return;
+      
+      const idx = parseInt(val);
+      if (isNaN(idx) || idx < 0 || idx >= presets.length) return;
+      
+      const p = presets[idx];
+      const current = buildPresetFromCurrent(p.name);
+      
+      let isDirty = false;
+      if (p.ratio !== current.ratio) isDirty = true;
+      if (p.ratio === 'custom' && (p.customW !== current.customW || p.customH !== current.customH)) isDirty = true;
+      if (p.radius !== current.radius) isDirty = true;
+      if (p.margin !== current.margin) isDirty = true;
+      if (p.dpi !== current.dpi) isDirty = true;
+      
+      const opt = presetSelect.options[presetSelect.selectedIndex];
+      if (!opt) return;
+      
+      if (isDirty) {
+        if (!opt.textContent.endsWith(' *')) {
+          opt.textContent = p.name + ' *';
+        }
+      } else {
+        opt.textContent = p.name;
+      }
+    }
+
+    async function saveOrUpdatePreset(newPreset, skipConfirm = false) {
+      const existingIdx = presets.findIndex(p => p.name === newPreset.name);
+      if (existingIdx !== -1) {
+        if (!skipConfirm) {
+          if (!(await customConfirm(`A preset named "${newPreset.name}" already exists. Do you want to overwrite it?`))) {
+            return false;
+          }
+        }
+        presets[existingIdx] = newPreset;
+        savePresets();
+        renderPresetsDropdown();
+        presetSelect.value = existingIdx;
+        presetSelect.dispatchEvent(new Event('change'));
+        return true;
+      } else {
+        presets.push(newPreset);
+        savePresets();
+        renderPresetsDropdown();
+        presetSelect.value = presets.length - 1;
+        presetSelect.dispatchEvent(new Event('change'));
+        return true;
+      }
+    }
+
+    const savePresetModal = document.getElementById('savePresetModal');
+    const btnUpdatePreset = document.getElementById('btnUpdatePreset');
+    const btnSaveNewPreset = document.getElementById('btnSaveNewPreset');
+    const btnCancelSavePreset = document.getElementById('btnCancelSavePreset');
+    const newPresetNameInput = document.getElementById('newPresetNameInput');
+
+    btnCancelSavePreset.addEventListener('click', () => {
+      savePresetModal.classList.add('hidden');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const dialogModal = document.getElementById('dialogModal');
+        if (dialogModal && !dialogModal.classList.contains('hidden')) {
+          document.getElementById('btnDialogCancel').click();
+          return;
+        }
+        
+        const saveModal = document.getElementById('savePresetModal');
+        if (saveModal && !saveModal.classList.contains('hidden')) {
+          btnCancelSavePreset.click();
+          return;
+        }
+      }
+    });
+
+    btnUpdatePreset.addEventListener('click', () => {
+      if (!window._currentSaveContext) return;
+      const newPreset = buildPresetFromCurrent(window._currentSaveContext);
+      // Skip the overwrite confirm prompt since they explicitly clicked "Update"
+      const existingIdx = presets.findIndex(p => p.name === newPreset.name);
+      if (existingIdx !== -1) {
+        presets[existingIdx] = newPreset;
+        savePresets();
+        renderPresetsDropdown();
+        presetSelect.value = existingIdx;
+        presetSelect.dispatchEvent(new Event('change'));
+      }
+      savePresetModal.classList.add('hidden');
+    });
+
+    btnSaveNewPreset.addEventListener('click', async () => {
+      const name = newPresetNameInput.value.trim();
+      if (!name) {
+        await customAlert("Please enter a name for the new preset.");
+        return;
+      }
+      const newPreset = buildPresetFromCurrent(name);
+      if (await saveOrUpdatePreset(newPreset)) {
+        savePresetModal.classList.add('hidden');
+      }
+    });
+
+    async function handleSavePreset() {
+      let isDirty = false;
+      let currentPresetName = '';
+      
+      if (presetSelect.value !== 'default') {
+        const idx = parseInt(presetSelect.value);
+        if (!isNaN(idx) && idx >= 0 && idx < presets.length) {
+          currentPresetName = presets[idx].name;
+          const opt = presetSelect.options[presetSelect.selectedIndex];
+          if (opt && opt.textContent.endsWith(' *')) {
+            isDirty = true;
+          }
+        }
+      }
+
+      if (isDirty && currentPresetName) {
+        window._currentSaveContext = currentPresetName;
+        document.getElementById('savePresetMsg').innerHTML = `You have unsaved changes to <strong>${currentPresetName}</strong>.`;
+        btnUpdatePreset.textContent = `Update "${currentPresetName}"`;
+        newPresetNameInput.value = '';
+        savePresetModal.classList.remove('hidden');
+        newPresetNameInput.focus();
+      } else {
+        const defaultName = currentPresetName || "My Custom Preset";
+        const name = await customPrompt("Enter a name for this preset:", defaultName);
+        if (!name || name.trim() === "") return;
+        
+        const newPreset = buildPresetFromCurrent(name.trim());
+        await saveOrUpdatePreset(newPreset);
+      }
+    }
+
+    async function handleDeletePreset() {
+      const val = presetSelect.value;
+      if (val === 'default') {
+        await customAlert("Cannot delete the default preset.");
+        return;
+      }
+      
+      const idx = parseInt(val);
+      if (!isNaN(idx) && idx >= 0 && idx < presets.length) {
+        if (await customConfirm(`Delete preset "${presets[idx].name}"?`)) {
+          presets.splice(idx, 1);
+          savePresets();
+          renderPresetsDropdown();
+          presetSelect.value = 'default';
+          presetSelect.dispatchEvent(new Event('change'));
+        }
+      }
+    }
+
+    async function handleSharePreset() {
+      let shareName = '';
+      let isDirty = false;
+      
+      if (presetSelect.value !== 'default') {
+        const idx = parseInt(presetSelect.value);
+        if (!isNaN(idx) && idx >= 0 && idx < presets.length) {
+          shareName = presets[idx].name;
+          const opt = presetSelect.options[presetSelect.selectedIndex];
+          if (opt && opt.textContent.endsWith(' *')) {
+            isDirty = true;
+          }
+        }
+      }
+      
+      // Prompt if they haven't selected a named preset, or if it's dirty
+      if (!shareName || isDirty) {
+        const defaultPrompt = isDirty ? `${shareName} (Modified)` : "Custom Setup";
+        shareName = await customPrompt("Enter a name for this shared preset:", defaultPrompt);
+        if (!shareName || shareName.trim() === '') return;
+      }
+
+      const p = buildPresetFromCurrent(shareName.trim());
+      const params = new URLSearchParams();
+      params.set('name', p.name); // Using 'name' for cleaner URL
+      params.set('presetName', p.name); // Keep presetName for backward compatibility during testing
+      params.set('ratio', p.ratio || '');
+      if (p.customW !== undefined) params.set('w', p.customW);
+      if (p.customH !== undefined) params.set('h', p.customH);
+      params.set('r', p.radius);
+      params.set('m', p.margin);
+      params.set('dpi', p.dpi);
+      
+      const shareUrl = window.location.origin + window.location.pathname + '?' + params.toString();
+      
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        const origText = sharePresetBtn.textContent;
+        sharePresetBtn.textContent = 'Copied!';
+        setTimeout(() => sharePresetBtn.textContent = origText, 2000);
+      }).catch(async err => {
+        await customAlert('Failed to copy link: ' + shareUrl);
+      });
+    }
+
+    async function checkUrlForPreset() {
+      const params = new URLSearchParams(window.location.search);
+      
+      // 1. Direct local preset loading via ?preset=Name
+      const loadName = params.get('loadPreset') || params.get('preset');
+      if (loadName) {
+        const existingIdx = presets.findIndex(p => p.name.toLowerCase() === loadName.toLowerCase());
+        if (existingIdx !== -1) {
+          applyPreset(presets[existingIdx]);
+          presetSelect.value = existingIdx;
+          try { localStorage.setItem('gammacrop_lastPreset', presets[existingIdx].name); } catch (e) {}
+          
+          const newParams = new URLSearchParams(window.location.search);
+          newParams.set('preset', presets[existingIdx].name);
+          newParams.delete('loadPreset'); // Normalize to ?preset=
+          window.history.replaceState({}, document.title, window.location.pathname + '?' + newParams.toString());
+          
+          return true;
+        } else {
+          await customAlert(`Preset "${loadName}" not found in your local presets.`);
+          const newParams = new URLSearchParams(window.location.search);
+          newParams.delete('preset');
+          newParams.delete('loadPreset');
+          const newSearch = newParams.toString();
+          window.history.replaceState({}, document.title, window.location.pathname + (newSearch ? '?' + newSearch : ''));
+        }
+      }
+
+      // 2. Shared preset parsing via full parameters
+      if (params.has('ratio')) {
+        const p = {
+          name: params.get('name') || params.get('presetName') || 'Shared Preset',
+          ratio: params.get('ratio'),
+          customW: parseFloat(params.get('w') || '50'),
+          customH: parseFloat(params.get('h') || '50'),
+          radius: parseFloat(params.get('r') || '2'),
+          margin: parseFloat(params.get('m') || '0.2'),
+          dpi: parseInt(params.get('dpi') || '600')
+        };
+        
+        applyPreset(p);
+        
+        // Ask to save and handle conflicts
+        let savedName = null;
+        const existingIdx = presets.findIndex(existing => existing.name === p.name);
+
+        if (existingIdx === -1) {
+          // No conflict
+          if (await customConfirm(`A preset "${p.name}" was shared with you. Would you like to save it to your local presets?`)) {
+            await saveOrUpdatePreset(p, true); // True to skip confirm since we know it doesn't exist
+            savedName = p.name;
+          }
+        } else {
+          // Conflict
+          const newName = await customPrompt(`A shared preset "${p.name}" has the same name as one of your local presets.\n\nEnter a new name to save it as a copy, or keep the current name to OVERWRITE your local preset:`, p.name);
+          
+          if (newName && newName.trim() !== "") {
+            p.name = newName.trim();
+            // If they kept the exact same name, it means they chose to overwrite, skip the redundant confirm.
+            const skipConfirm = (p.name === presets[existingIdx].name);
+            if (await saveOrUpdatePreset(p, skipConfirm)) {
+              savedName = p.name;
+            }
+          }
+        }
+        
+        if (savedName) {
+           const newParams = new URLSearchParams(window.location.search);
+           // Clear all previous sharing parameters
+           for (const key of Array.from(newParams.keys())) { newParams.delete(key); }
+           newParams.set('preset', savedName);
+           window.history.replaceState({}, document.title, window.location.pathname + '?' + newParams.toString());
+        } else {
+           // Clean URL if they declined saving
+           window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        
+        return true; // Indicates URL preset was applied
+      }
+      return false;
+    }
+
+    function buildRotatedCanvas() {
+      const eff = getEffectiveSize();
+      rotatedCanvas = document.createElement('canvas');
+      rotatedCanvas.width = eff.w;
+      rotatedCanvas.height = eff.h;
+      const rctx = rotatedCanvas.getContext('2d');
+      rctx.save();
+      rctx.translate(eff.w / 2, eff.h / 2);
+      rctx.rotate(rotation * Math.PI / 180);
+      const source = (bgRemoved && bgRemovedImg) ? bgRemovedImg : img;
+      const sw = source.naturalWidth || source.width;
+      const sh = source.naturalHeight || source.height;
+      rctx.drawImage(source, -sw / 2, -sh / 2);
+      rctx.restore();
+    }
+
+    function initCropBox() {
+      if (!rotatedCanvas) return;
+      const iw = rotatedCanvas.width, ih = rotatedCanvas.height;
+      const ar = getCurrentRatio();
+
+      let fitW = iw, fitH = ih, centerX = iw / 2, centerY = ih / 2;
+
+      // When zoomed in, size the crop to fit the visible viewport instead of the full image
+      if (zoomFactor > 1.05) {
+        const areaW = canvasArea.clientWidth;
+        const areaH = canvasArea.clientHeight;
+        const baseScale = Math.min(areaW * 0.9 / iw, areaH * 0.9 / ih);
+        const scale = baseScale * zoomFactor;
+        const dx = (areaW - iw * scale) / 2 + panX;
+        const dy = (areaH - ih * scale) / 2 + panY;
+
+        // Visible image area (clamped to image bounds)
+        const visL = Math.max(0, -dx / scale);
+        const visT = Math.max(0, -dy / scale);
+        const visR = Math.min(iw, (areaW - dx) / scale);
+        const visB = Math.min(ih, (areaH - dy) / scale);
+
+        fitW = visR - visL;
+        fitH = visB - visT;
+        centerX = (visL + visR) / 2;
+        centerY = (visT + visB) / 2;
+      }
+
+      // Fit crop to the effective area (with 90% padding)
+      fitW *= 0.9;
+      fitH *= 0.9;
+      let cw, ch;
+      if (fitW / fitH > ar) { ch = fitH; cw = fitH * ar; }
+      else { cw = fitW; ch = fitW / ar; }
+
+      crop = { x: centerX - cw / 2, y: centerY - ch / 2, w: cw, h: ch };
+    }
+
+    function calcOutputDims() {
+      const s = getCurrentSize();
+      let physW = s.w;
+      let physH = s.h;
+      if (edgeInset < 0) {
+        physW += Math.abs(edgeInset) * 2;
+        physH += Math.abs(edgeInset) * 2;
+      }
+      const targetPpm = dpi / 0.0254;
+      let bestPpm = Math.round(targetPpm);
+      let minDiff = Infinity;
+      for (let p = Math.round(targetPpm - 2000); p <= Math.round(targetPpm + 2000); p++) {
+        const outW = p * (physW / 1000);
+        const outH = p * (physH / 1000);
+        if (Math.abs(outW - Math.round(outW)) < 1e-9 && Math.abs(outH - Math.round(outH)) < 1e-9) {
+          if (Math.abs(p - targetPpm) < minDiff) {
+            minDiff = Math.abs(p - targetPpm);
+            bestPpm = p;
+          }
+        }
+      }
+      return {
+        w: Math.round(bestPpm * (physW / 1000)),
+        h: Math.round(bestPpm * (physH / 1000)),
+        ppm: bestPpm
+      };
+    }
+
+    function updateOutputDisplay() {
+      if (!ratio) { outputSize.textContent = '— × — px'; return; }
+      const d = calcOutputDims();
+      outputSize.textContent = `${d.w} × ${d.h} px`;
+    }
+
+    function cornerRadiusCanvasPx() {
+      if (!ratio) return 0;
+      const physW = getCurrentSize().w;
+      const pxPerMm = crop.w / physW;
+      return cornerRadius * pxPerMm * dm.scale;
+    }
+
+    function edgeInsetCanvasPx() {
+      if (!ratio || edgeInset === 0) return 0;
+      const physW = getCurrentSize().w;
+      const pxPerMm = crop.w / physW;
+      return edgeInset * pxPerMm * dm.scale;
+    }
+
+    function roundedRectPath(c, x, y, w, h, r) {
+      if (r <= 0) {
+        c.beginPath();
+        c.rect(x, y, w, h);
+        return;
+      }
+      r = Math.min(r, w / 2, h / 2);
+      c.beginPath();
+      c.moveTo(x + r, y);
+      c.lineTo(x + w - r, y);
+      c.arcTo(x + w, y, x + w, y + r, r);
+      c.lineTo(x + w, y + h - r);
+      c.arcTo(x + w, y + h, x + w - r, y + h, r);
+      c.lineTo(x + r, y + h);
+      c.arcTo(x, y + h, x, y + h - r, r);
+      c.lineTo(x, y + r);
+      c.arcTo(x, y, x + r, y, r);
+      c.closePath();
+    }
+
+    // ── Render ──
+    function render() {
+      if (!rotatedCanvas) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const areaW = canvasArea.clientWidth;
+      const areaH = canvasArea.clientHeight;
+      canvasEl.width = areaW * dpr;
+      canvasEl.height = areaH * dpr;
+      canvasEl.style.width = areaW + 'px';
+      canvasEl.style.height = areaH + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const iw = rotatedCanvas.width, ih = rotatedCanvas.height;
+      const baseScale = Math.min(areaW * 0.9 / iw, areaH * 0.9 / ih);
+      const scale = baseScale * zoomFactor;
+      const dw = iw * scale, dh = ih * scale;
+      const dx = (areaW - dw) / 2 + panX, dy = (areaH - dh) / 2 + panY;
+      dm = { scale, dx, dy, dw, dh, baseScale };
+
+      // Shared checkerboard pattern (created once)
+      if (!render._checkerPat) {
+        const c = document.createElement('canvas');
+        c.width = 16; c.height = 16;
+        const x = c.getContext('2d');
+        x.fillStyle = '#2a2a3e'; x.fillRect(0, 0, 16, 16);
+        x.fillStyle = '#1e1e32'; x.fillRect(0, 0, 8, 8); x.fillRect(8, 8, 8, 8);
+        render._checkerPat = ctx.createPattern(c, 'repeat');
+      }
+
+      // Checkerboard for transparent background preview
+      if (bgRemoved) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(dx, dy, dw, dh);
+        ctx.clip();
+        ctx.fillStyle = render._checkerPat;
+        ctx.fillRect(dx, dy, dw, dh);
+        ctx.restore();
+      }
+
+      // Draw image
+      ctx.drawImage(rotatedCanvas, dx, dy, dw, dh);
+
+      // Keep the live preview in sync with every crop/param change
+      updatePreview();
+
+      // Skip crop overlay if no ratio selected yet
+      if (!cropActive) return;
+
+      // Crop box in canvas coords
+      const cx = crop.x * scale + dx;
+      const cy = crop.y * scale + dy;
+      const cw = crop.w * scale;
+      const ch = crop.h * scale;
+
+      // Dark overlay outside crop (only within image bounds)
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+      ctx.fillRect(dx, dy, dw, cy - dy);
+      ctx.fillRect(dx, cy + ch, dw, (dy + dh) - (cy + ch));
+      ctx.fillRect(dx, cy, cx - dx, ch);
+      ctx.fillRect(cx + cw, cy, (dx + dw) - (cx + cw), ch);
+
+      // Checkerboard for crop area extending beyond image (transparent fill preview)
+      if (cx < dx || cy < dy || cx + cw > dx + dw || cy + ch > dy + dh) {
+        ctx.save();
+        // Clip to crop box minus image area
+        ctx.beginPath();
+        ctx.rect(cx, cy, cw, ch);
+        // Subtract image area using even-odd rule
+        ctx.rect(dx, dy, dw, dh);
+        ctx.clip('evenodd');
+        ctx.fillStyle = render._checkerPat;
+        ctx.fillRect(cx, cy, cw, ch);
+        ctx.restore();
+      }
+
+      // Crop border with rounded corners — per-edge out-of-bounds coloring
+      const r = cornerRadiusCanvasPx();
+      // iw, ih already declared above
+
+      // Detect which edges are out of bounds (in image coords)
+      // When edgeInset < 0 (bleeding), the export area extends beyond the crop box
+      let bleedPx = 0;
+      if (edgeInset < 0 && ratio) {
+        const physW = getCurrentSize().w;
+        const pxPerMm = crop.w / physW;
+        bleedPx = Math.abs(edgeInset) * pxPerMm; // bleed in image pixels
+      }
+      const oobLeft   = crop.x - bleedPx < -0.5;
+      const oobTop    = crop.y - bleedPx < -0.5;
+      const oobRight  = crop.x + crop.w + bleedPx > iw + 0.5;
+      const oobBottom = crop.y + crop.h + bleedPx > ih + 0.5;
+      const anyOOB = oobLeft || oobTop || oobRight || oobBottom;
+
+      const normalColor = 'rgba(169, 200, 252, 0.8)';
+      const normalGlow  = 'rgba(169, 200, 252, 0.12)';
+      const warnColor   = 'rgba(255, 210, 60, 0.95)';
+      const warnGlow    = 'rgba(255, 210, 60, 0.18)';
+
+      if (!anyOOB) {
+        // All edges in bounds — draw uniformly (original fast path)
+        ctx.strokeStyle = normalGlow;
+        ctx.lineWidth = 8;
+        roundedRectPath(ctx, cx, cy, cw, ch, r);
+        ctx.stroke();
+        ctx.strokeStyle = normalColor;
+        ctx.lineWidth = 1.5;
+        roundedRectPath(ctx, cx, cy, cw, ch, r);
+        ctx.stroke();
+      } else {
+        // Draw each edge segment individually with its own color
+        // Helper to draw a single edge line (straight, ignoring rounded corners for per-edge coloring)
+        const drawEdge = (x1, y1, x2, y2, isOOB) => {
+          // Glow
+          ctx.strokeStyle = isOOB ? warnGlow : normalGlow;
+          ctx.lineWidth = 8;
+          ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+          // Main
+          ctx.strokeStyle = isOOB ? warnColor : normalColor;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+        };
+
+        // Inset corners slightly to avoid double-drawing at corners
+        const cr = Math.min(r, cw / 2, ch / 2);
+        // Top edge
+        drawEdge(cx + cr, cy, cx + cw - cr, cy, oobTop);
+        // Right edge
+        drawEdge(cx + cw, cy + cr, cx + cw, cy + ch - cr, oobRight);
+        // Bottom edge
+        drawEdge(cx + cw - cr, cy + ch, cx + cr, cy + ch, oobBottom);
+        // Left edge
+        drawEdge(cx, cy + ch - cr, cx, cy + cr, oobLeft);
+
+        // Draw rounded corners — color by adjacent edges
+        const drawCornerArc = (cornerX, cornerY, startAngle, isOOBa, isOOBb) => {
+          const isWarn = isOOBa || isOOBb;
+          ctx.strokeStyle = isWarn ? warnGlow : normalGlow;
+          ctx.lineWidth = 8;
+          ctx.beginPath(); ctx.arc(cornerX, cornerY, cr, startAngle, startAngle + Math.PI / 2); ctx.stroke();
+          ctx.strokeStyle = isWarn ? warnColor : normalColor;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.arc(cornerX, cornerY, cr, startAngle, startAngle + Math.PI / 2); ctx.stroke();
+        };
+
+        if (cr > 0.5) {
+          // TL corner (left + top)
+          drawCornerArc(cx + cr, cy + cr, Math.PI, oobLeft, oobTop);
+          // TR corner (top + right)
+          drawCornerArc(cx + cw - cr, cy + cr, -Math.PI / 2, oobTop, oobRight);
+          // BR corner (right + bottom)
+          drawCornerArc(cx + cw - cr, cy + ch - cr, 0, oobRight, oobBottom);
+          // BL corner (bottom + left)
+          drawCornerArc(cx + cr, cy + ch - cr, Math.PI / 2, oobBottom, oobLeft);
+        }
+      }
+
+      // Edge inset preview
+      const insPx = edgeInsetCanvasPx();
+      if (Math.abs(insPx) > 0.5) {
+        const inR = Math.max(0, r - insPx);
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = 'rgba(255, 180, 80, 0.6)';
+        ctx.lineWidth = 1;
+        roundedRectPath(ctx, cx + insPx, cy + insPx, cw - insPx * 2, ch - insPx * 2, inR);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Corner handles
+      const hs = 7;
+      const corners = [
+        [cx, cy], [cx + cw, cy],
+        [cx, cy + ch], [cx + cw, cy + ch]
+      ];
+      for (const [hx, hy] of corners) {
+        // Outer
+        ctx.fillStyle = '#a9c8fc';
+        ctx.fillRect(hx - hs, hy - hs, hs * 2, hs * 2);
+        // Inner
+        ctx.fillStyle = '#0f3460';
+        ctx.fillRect(hx - hs + 2, hy - hs + 2, (hs - 2) * 2, (hs - 2) * 2);
+      }
+    }
+
+    // ── Canvas coordinate helpers ──
+    function canvasToImage(mx, my) {
+      return {
+        x: (mx - dm.dx) / dm.scale,
+        y: (my - dm.dy) / dm.scale
+      };
+    }
+
+    function getCanvasPos(e) {
+      const rect = canvasEl.getBoundingClientRect();
+      const x = (e.clientX ?? e.touches?.[0]?.clientX ?? 0) - rect.left;
+      const y = (e.clientY ?? e.touches?.[0]?.clientY ?? 0) - rect.top;
+      return { x, y };
+    }
+
+    function hitTestHandle(mx, my) {
+      if (!cropActive) return null;
+      const hs = 14; // hit area (larger than visual)
+      const cx = crop.x * dm.scale + dm.dx;
+      const cy = crop.y * dm.scale + dm.dy;
+      const cw = crop.w * dm.scale;
+      const ch = crop.h * dm.scale;
+
+      const corners = {
+        tl: [cx, cy], tr: [cx + cw, cy],
+        bl: [cx, cy + ch], br: [cx + cw, cy + ch]
+      };
+      for (const [key, [hx, hy]] of Object.entries(corners)) {
+        if (Math.abs(mx - hx) < hs && Math.abs(my - hy) < hs) return key;
+      }
+      // Check if inside crop box
+      if (mx > cx && mx < cx + cw && my > cy && my < cy + ch) return 'move';
+      return null;
+    }
+
+    // ── Mouse / Touch interaction ──
+    function onPointerDown(e) {
+      e.preventDefault();
+      const pos = getCanvasPos(e);
+      if (eraserActive && bgRemoved) {
+        // If clicking on a crop corner handle (resize), deactivate eraser and start resize
+        const hit = hitTestHandle(pos.x, pos.y);
+        if (hit === 'tl' || hit === 'tr' || hit === 'bl' || hit === 'br') {
+          eraserActive = false;
+          eraserDrawing = false;
+          eraserToggle.textContent = 'Eraser Off';
+          eraserToggle.classList.remove('active');
+          eraserCursor.style.display = 'none';
+          canvasEl.style.cursor = '';
+          dragMode = hit;
+          dragStart = { mx: pos.x, my: pos.y, cx: crop.x, cy: crop.y, cw: crop.w, ch: crop.h };
+          return;
+        }
+        eraserDrawing = true;
+        eraseAt(pos.x, pos.y);
+        return;
+      }
+      const hit = hitTestHandle(pos.x, pos.y);
+      if (!hit) {
+        // Pan mode when clicking on empty area (or when no crop)
+        if (rotatedCanvas) {
+          dragMode = 'pan';
+          dragStart = { mx: pos.x, my: pos.y, px: panX, py: panY };
+        }
+        return;
+      }
+
+      dragMode = hit;
+      dragStart = { mx: pos.x, my: pos.y, cx: crop.x, cy: crop.y, cw: crop.w, ch: crop.h };
+    }
+
+    function onPointerMove(e) {
+      const pos = getCanvasPos(e);
+
+      if (eraserActive && bgRemoved) {
+        const sz = parseInt(eraserSizeSlider.value) * dm.scale;
+        eraserCursor.style.left = (e.clientX - sz / 2) + 'px';
+        eraserCursor.style.top = (e.clientY - sz / 2) + 'px';
+        if (eraserDrawing) {
+          e.preventDefault();
+          eraseAt(pos.x, pos.y);
+        }
+        return;
+      }
+
+      if (!dragMode) {
+        // Update cursor
+        const hit = hitTestHandle(pos.x, pos.y);
+        if (hit === 'tl' || hit === 'br') canvasEl.style.cursor = 'nwse-resize';
+        else if (hit === 'tr' || hit === 'bl') canvasEl.style.cursor = 'nesw-resize';
+        else if (hit === 'move') canvasEl.style.cursor = 'move';
+        else canvasEl.style.cursor = rotatedCanvas ? 'grab' : 'default';
+        return;
+      }
+
+      if (dragMode === 'pan') {
+        e.preventDefault();
+        panX = dragStart.px + (pos.x - dragStart.mx);
+        panY = dragStart.py + (pos.y - dragStart.my);
+        canvasEl.style.cursor = 'grabbing';
+        render();
+        return;
+      }
+
+      e.preventDefault();
+      const iw = rotatedCanvas.width, ih = rotatedCanvas.height;
+      const dxMouse = (pos.x - dragStart.mx) / dm.scale;
+      const dyMouse = (pos.y - dragStart.my) / dm.scale;
+      const ar = getCurrentRatio();
+
+      if (dragMode === 'move') {
+        crop.x = dragStart.cx + dxMouse;
+        crop.y = dragStart.cy + dyMouse;
+      } else {
+        // Resize from corner, opposite corner is anchor
+        let anchorX, anchorY, signX, signY;
+        if (dragMode === 'tl') { anchorX = dragStart.cx + dragStart.cw; anchorY = dragStart.cy + dragStart.ch; signX = -1; signY = -1; }
+        else if (dragMode === 'tr') { anchorX = dragStart.cx; anchorY = dragStart.cy + dragStart.ch; signX = 1; signY = -1; }
+        else if (dragMode === 'bl') { anchorX = dragStart.cx + dragStart.cw; anchorY = dragStart.cy; signX = -1; signY = 1; }
+        else { anchorX = dragStart.cx; anchorY = dragStart.cy; signX = 1; signY = 1; }
+
+        // Calculate new size based on mouse distance from anchor
+        const imgPos = canvasToImage(pos.x, pos.y);
+        let newW = Math.abs(imgPos.x - anchorX);
+        let newH = newW / ar;
+        // Also try height-based
+        const newH2 = Math.abs(imgPos.y - anchorY);
+        const newW2 = newH2 * ar;
+        if (newW2 > newW) { newW = newW2; newH = newH2; }
+
+        // Minimum size
+        const minPx = 30;
+        newW = Math.max(minPx, newW);
+        newH = Math.max(minPx / ar, newH);
+
+        crop.w = newW;
+        crop.h = newH;
+        crop.x = signX > 0 ? anchorX : anchorX - newW;
+        crop.y = signY > 0 ? anchorY : anchorY - newH;
+      }
+
+      render();
+    }
+
+    function onPointerUp() {
+      if (eraserDrawing) { eraserDrawing = false; return; }
+      if (dragMode === 'pan') canvasEl.style.cursor = rotatedCanvas ? 'grab' : 'default';
+      dragMode = null;
+    }
+
+    canvasEl.addEventListener('mousedown', onPointerDown);
+    canvasEl.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+
+    // Touch support
+    canvasEl.addEventListener('touchstart', (e) => onPointerDown(e), { passive: false });
+    canvasEl.addEventListener('touchmove', (e) => onPointerMove(e), { passive: false });
+    window.addEventListener('touchend', onPointerUp);
+
+    // ── Image loading ──
+    function loadImage(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      sourceBaseName = file.name.replace(/\.[^.]+$/, '') || 'magnet';
+      
+      // Capture the currently active ratio before we reset the UI
+      const activeBtn = ratioRow.querySelector('.ratio-btn.active');
+      const ratioToRestore = activeBtn ? activeBtn.dataset.ratio : null;
+
+      // Show loading state
+      dropZone.classList.add('hidden');
+      canvasEl.classList.add('hidden');
+      swapBtn.classList.add('hidden');
+      canvasArea.style.cursor = 'wait';
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        img = new Image();
+        img.onload = () => {
+          rotation = 0;
+          bgRemoved = false;
+          bgRemovedImg = null;
+          document.getElementById('bgRemoveBtn').disabled = false;
+          document.getElementById('bgRemoveBtn').textContent = '✂ Remove Background';
+          document.getElementById('bgRestoreBtn').classList.add('hidden');
+          document.getElementById('bgProgress').classList.add('hidden');
+          cropActive = false;
+          ratio = null;
+          ratioRow.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+          customSizeRow.classList.add('hidden');
+          outputSize.textContent = '— × — px';
+          resetZoom();
+          buildRotatedCanvas();
+          canvasEl.classList.remove('hidden');
+          swapBtn.classList.remove('hidden');
+          document.getElementById('zoomControls').classList.remove('hidden');
+          document.getElementById('rotateControls').classList.remove('hidden');
+          document.getElementById('positionControls').classList.remove('hidden');
+          exportBtn.disabled = true;
+          canvasArea.style.cursor = '';
+          render();
+
+          try {
+            const savedRatio = ratioToRestore || localStorage.getItem('gammacrop_selectedRatio');
+            if (savedRatio) {
+              const btn = ratioRow.querySelector(`[data-ratio="${savedRatio}"]`);
+              if (btn) setTimeout(() => btn.click(), 10);
+            }
+          } catch (e) { }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    const swapBtn = document.getElementById('swapBtn');
+    // Drop zone events
+    function triggerFileSelect() { fileInput.value = ''; fileInput.click(); }
+    dropZone.addEventListener('click', triggerFileSelect);
+    swapBtn.addEventListener('click', triggerFileSelect);
+    fileInput.addEventListener('change', (e) => { if (e.target.files[0]) loadImage(e.target.files[0]); });
+
+    canvasArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+    canvasArea.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    canvasArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]);
+    });
+
+    // Also allow dropping on canvas (to swap image)
+    canvasEl.addEventListener('dragover', (e) => e.preventDefault());
+    canvasEl.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // canvas is inside canvasArea — stop bubbling so loadImage doesn't fire twice (would toggle the restored ratio back off)
+      if (e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]);
+    });
+
+    // ── Zoom ──
+    const zoomLevelEl = document.getElementById('zoomLevel');
+
+    function resetZoom() {
+      zoomFactor = 1;
+      panX = 0;
+      panY = 0;
+      updateZoomLabel();
+    }
+
+    function updateZoomLabel() {
+      if (Math.abs(zoomFactor - 1) < 0.01) {
+        zoomLevelEl.textContent = 'FIT';
+      } else {
+        zoomLevelEl.textContent = Math.round(zoomFactor * 100) + '%';
+      }
+    }
+
+    function applyZoom(newZoom, centerX, centerY) {
+      const oldZoom = zoomFactor;
+      newZoom = Math.max(0.25, Math.min(8, newZoom));
+      if (newZoom === oldZoom) return;
+
+      if (centerX !== undefined && centerY !== undefined) {
+        // Zoom toward (centerX, centerY) in canvas-area coords
+        const areaW = canvasArea.clientWidth;
+        const areaH = canvasArea.clientHeight;
+        const iw = rotatedCanvas.width, ih = rotatedCanvas.height;
+        const oldScale = dm.baseScale * oldZoom;
+        const newScale = dm.baseScale * newZoom;
+        // Image point under cursor
+        const imgX = (centerX - (areaW - iw * oldScale) / 2 - panX) / oldScale;
+        const imgY = (centerY - (areaH - ih * oldScale) / 2 - panY) / oldScale;
+        // New pan so that same image point stays under cursor
+        panX = centerX - imgX * newScale - (areaW - iw * newScale) / 2;
+        panY = centerY - imgY * newScale - (areaH - ih * newScale) / 2;
+      } else {
+        // Center zoom: scale pan proportionally
+        panX = panX * (newZoom / oldZoom);
+        panY = panY * (newZoom / oldZoom);
+      }
+
+      zoomFactor = newZoom;
+      updateZoomLabel();
+      render();
+    }
+
+    document.getElementById('zoomIn').addEventListener('click', () => {
+      applyZoom(zoomFactor * 1.12);
+    });
+
+    document.getElementById('zoomOut').addEventListener('click', () => {
+      applyZoom(zoomFactor / 1.12);
+    });
+
+    document.getElementById('zoomFit').addEventListener('click', () => {
+      resetZoom();
+      if (rotatedCanvas) render();
+    });
+
+    // ── Position Controls ──
+    function nudgeCrop(dx, dy) {
+      if (!cropActive || !rotatedCanvas) return;
+      crop.x += dx;
+      crop.y += dy;
+      render();
+    }
+
+    // Fill: maximize crop within image bounds maintaining aspect ratio
+    document.getElementById('posFill').addEventListener('click', () => {
+      if (!cropActive || !rotatedCanvas) return;
+      const ar = getCurrentRatio();
+      const iw = rotatedCanvas.width, ih = rotatedCanvas.height;
+      let cw, ch;
+      if (iw / ih > ar) { ch = ih; cw = ih * ar; }
+      else { cw = iw; ch = iw / ar; }
+      crop = { x: (iw - cw) / 2, y: (ih - ch) / 2, w: cw, h: ch };
+      render();
+    });
+
+    // Center: center crop on both axes
+    document.getElementById('posCenter').addEventListener('click', () => {
+      if (!cropActive || !rotatedCanvas) return;
+      crop.x = (rotatedCanvas.width - crop.w) / 2;
+      crop.y = (rotatedCanvas.height - crop.h) / 2;
+      render();
+    });
+
+    // Center X: center horizontally only
+    document.getElementById('posCenterX').addEventListener('click', () => {
+      if (!cropActive || !rotatedCanvas) return;
+      crop.x = (rotatedCanvas.width - crop.w) / 2;
+      render();
+    });
+
+    // Center Y: center vertically only
+    document.getElementById('posCenterY').addEventListener('click', () => {
+      if (!cropActive || !rotatedCanvas) return;
+      crop.y = (rotatedCanvas.height - crop.h) / 2;
+      render();
+    });
+
+    // Reset: restore initial crop size & position
+    document.getElementById('posReset').addEventListener('click', () => {
+      if (!cropActive || !rotatedCanvas) return;
+      resetZoom();
+      initCropBox();
+      render();
+    });
+
+    // Nudge buttons
+    document.getElementById('nudgeLeft').addEventListener('click',  () => nudgeCrop(-1, 0));
+    document.getElementById('nudgeRight').addEventListener('click', () => nudgeCrop(1, 0));
+    document.getElementById('nudgeUp').addEventListener('click',    () => nudgeCrop(0, -1));
+    document.getElementById('nudgeDown').addEventListener('click',  () => nudgeCrop(0, 1));
+
+    // Mouse wheel zoom
+    canvasArea.addEventListener('wheel', (e) => {
+      if (!rotatedCanvas) return;
+      e.preventDefault();
+      const pos = getCanvasPos(e);
+      const delta = e.deltaY > 0 ? 1 / 1.06 : 1.06;
+      applyZoom(zoomFactor * delta, pos.x, pos.y);
+    }, { passive: false });
+
+    // Keyboard shortcuts (Ctrl/Cmd +/-/0 and Arrow keys for nudge)
+    window.addEventListener('keydown', (e) => {
+      if (!rotatedCanvas) return;
+      // Don't intercept when typing in inputs
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === '=' || e.key === '+') { e.preventDefault(); applyZoom(zoomFactor * 1.12); }
+        else if (e.key === '-') { e.preventDefault(); applyZoom(zoomFactor / 1.12); }
+        else if (e.key === '0') { e.preventDefault(); resetZoom(); render(); }
+      }
+      // Arrow keys to nudge crop box
+      if (cropActive && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+        const step = e.shiftKey ? 10 : 1; // 1px or 10px in image coords
+        if (e.key === 'ArrowLeft')  crop.x -= step;
+        if (e.key === 'ArrowRight') crop.x += step;
+        if (e.key === 'ArrowUp')    crop.y -= step;
+        if (e.key === 'ArrowDown')  crop.y += step;
+        render();
+      }
+    });
+
+    // ── Controls ──
+    // Ratio
+    ratioRow.addEventListener('click', (e) => {
+      const btn = e.target.closest('.ratio-btn');
+      if (!btn) return;
+      // Toggle off if clicking the already-active button
+      if (btn.classList.contains('active')) {
+        btn.classList.remove('active');
+        cropActive = false;
+        ratio = null;
+        customSizeRow.classList.add('hidden');
+        exportBtn.disabled = true;
+        outputSize.textContent = '— × — px';
+        try { localStorage.removeItem('gammacrop_selectedRatio'); } catch (e) { }
+        if (rotatedCanvas) render();
+        return;
+      }
+      ratioRow.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      ratio = btn.dataset.ratio;
+      try { localStorage.setItem('gammacrop_selectedRatio', ratio); } catch (e) { }
+
+      if (ratio === 'custom') {
+        customSizeRow.classList.remove('hidden');
+      } else {
+        customSizeRow.classList.add('hidden');
+      }
+
+      cropActive = true;
+      if (eraserActive) {
+        eraserActive = false;
+        eraserDrawing = false;
+        eraserToggle.textContent = 'Eraser Off';
+        eraserToggle.classList.remove('active');
+        eraserCursor.style.display = 'none';
+        canvasEl.style.cursor = '';
+      }
+      updateOutputDisplay();
+      if (rotatedCanvas) { initCropBox(); render(); }
+      if (img) exportBtn.disabled = false;
+      checkDirtyState();
+    });
+
+    function onCustomSizeChange() {
+      if (ratio !== 'custom') return;
+      try {
+        localStorage.setItem('gammacrop_customWidth', customWidthInput.value);
+        localStorage.setItem('gammacrop_customHeight', customHeightInput.value);
+      } catch (e) { }
+      updateOutputDisplay();
+      if (rotatedCanvas) { initCropBox(); render(); }
+      checkDirtyState();
+    }
+    customWidthInput.addEventListener('input', onCustomSizeChange);
+    customHeightInput.addEventListener('input', onCustomSizeChange);
+
+    // Rotation
+    document.getElementById('rotateCCW').addEventListener('click', () => {
+      rotation = (rotation + 270) % 360;
+      if (img) { buildRotatedCanvas(); if (cropActive) initCropBox(); render(); }
+    });
+    document.getElementById('rotateCW').addEventListener('click', () => {
+      rotation = (rotation + 90) % 360;
+      if (img) { buildRotatedCanvas(); if (cropActive) initCropBox(); render(); }
+    });
+
+    // Radius
+    radiusSlider.addEventListener('input', () => {
+      cornerRadius = radiusSlider.value / 10; // 0-50 → 0.0-5.0 mm
+      radiusValue.textContent = cornerRadius.toFixed(1) + ' mm';
+      try { localStorage.setItem('gammacrop_cornerRadius', radiusSlider.value); } catch (e) { }
+      if (rotatedCanvas) render();
+      checkDirtyState();
+    });
+
+    // Edge Inset
+
+    insetSlider.addEventListener('input', () => {
+      edgeInset = insetSlider.value / 10; // -10 to 10 → -1.0 to 1.0 mm
+      insetValue.textContent = (edgeInset > 0 ? '+' : '') + edgeInset.toFixed(1) + ' mm';
+      try { localStorage.setItem('gammacrop_safetyMargin', insetSlider.value); } catch (e) { }
+      if (rotatedCanvas) render();
+      checkDirtyState();
+    });
+
+    // DPI
+    dpiSelect.addEventListener('change', () => {
+      dpi = parseInt(dpiSelect.value);
+      try { localStorage.setItem('gammacrop_dpi', dpiSelect.value); } catch (e) { }
+      updateOutputDisplay();
+      checkDirtyState();
+    });
+
+    // Resize
+    window.addEventListener('resize', () => { if (rotatedCanvas) render(); });
+
+    // ── Export with DPI metadata ──
+    // CRC32 table
+    const crcTable = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      crcTable[n] = c;
+    }
+    function crc32(bytes) {
+      let crc = 0xFFFFFFFF;
+      for (let i = 0; i < bytes.length; i++) crc = crcTable[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8);
+      return (crc ^ 0xFFFFFFFF) >>> 0;
+    }
+
+    function insertPHYS(arrayBuf, exactPpm) {
+      const data = new Uint8Array(arrayBuf);
+
+      // Build pHYs chunk: 4(len) + 4(type) + 9(data) + 4(crc) = 21 bytes
+      const chunk = new Uint8Array(21);
+      const view = new DataView(chunk.buffer);
+      view.setUint32(0, 9); // data length
+      chunk[4] = 0x70; chunk[5] = 0x48; chunk[6] = 0x59; chunk[7] = 0x73; // "pHYs"
+      view.setUint32(8, exactPpm);  // X pixels per unit
+      view.setUint32(12, exactPpm); // Y pixels per unit
+      chunk[16] = 1; // unit = meter
+      view.setUint32(17, crc32(chunk.subarray(4, 17)));
+
+      // Insert after IHDR (PNG sig 8 bytes + IHDR chunk 25 bytes = offset 33)
+      const result = new Uint8Array(data.length + 21);
+      result.set(data.subarray(0, 33));
+      result.set(chunk, 33);
+      result.set(data.subarray(33), 54);
+      return result;
+    }
+
+    // Builds the final cropped artwork (rounded corners, out-of-bounds transparency,
+    // safety-margin inset) into a fresh canvas. Shared by Export (full res) and the
+    // live Preview (low res via targetW) so the preview is pixel-faithful to the download.
+    function buildCroppedCanvas(targetW) {
+      const full = calcOutputDims();
+      const lowRes = targetW && targetW < full.w;
+      const out_w = lowRes ? Math.round(targetW) : full.w;
+      const out_h = lowRes ? Math.max(1, Math.round(targetW * full.h / full.w)) : full.h;
+
+      const offscreen = document.createElement('canvas');
+      offscreen.width = out_w;
+      offscreen.height = out_h;
+      const ectx = offscreen.getContext('2d');
+
+      // Rounded corner clip
+      const s = getCurrentSize();
+      let physW = s.w;
+      let bleedMm = 0;
+      if (edgeInset < 0) {
+        bleedMm = Math.abs(edgeInset);
+        physW += bleedMm * 2;
+      }
+      const scale = out_w / physW;
+      const bleedPx = bleedMm * scale;
+      const rPx = cornerRadius * scale; // mm → output pixels
+      const outR = rPx > 0 ? rPx + bleedPx : 0;
+      roundedRectPath(ectx, 0, 0, out_w, out_h, outR);
+      ectx.clip();
+
+      // Draw cropped region (crop may extend beyond image — out-of-bounds areas stay transparent)
+      const iw = rotatedCanvas.width, ih = rotatedCanvas.height;
+      let srcCropX = crop.x, srcCropY = crop.y, srcCropW = crop.w, srcCropH = crop.h;
+
+      if (edgeInset < 0) {
+        const pxPerMm = crop.w / s.w;
+        const srcBleedPx = bleedMm * pxPerMm;
+        srcCropX -= srcBleedPx;
+        srcCropY -= srcBleedPx;
+        srcCropW += srcBleedPx * 2;
+        srcCropH += srcBleedPx * 2;
+      }
+
+      const srcL = Math.max(0, srcCropX), srcT = Math.max(0, srcCropY);
+      const srcR = Math.min(iw, srcCropX + srcCropW), srcB = Math.min(ih, srcCropY + srcCropH);
+      if (srcR > srcL && srcB > srcT) {
+        const dstL = (srcL - srcCropX) / srcCropW * out_w;
+        const dstT = (srcT - srcCropY) / srcCropH * out_h;
+        const dstW = (srcR - srcL) / srcCropW * out_w;
+        const dstH = (srcB - srcT) / srcCropH * out_h;
+        ectx.drawImage(rotatedCanvas, srcL, srcT, srcR - srcL, srcB - srcT, dstL, dstT, dstW, dstH);
+      }
+
+      // Apply edge inset: clear an inner border to transparent
+      if (edgeInset > 0) {
+        const insetPx = edgeInset * scale; // mm → output pixels
+        ectx.save();
+        ectx.globalCompositeOperation = 'destination-in';
+        ectx.beginPath();
+        const inR = Math.max(0, rPx - insetPx);
+        roundedRectPath(ectx, insetPx, insetPx, out_w - insetPx * 2, out_h - insetPx * 2, inR);
+        ectx.fill();
+        ectx.restore();
+      }
+
+      return { canvas: offscreen, w: full.w, h: full.h, ppm: full.ppm };
+    }
+
+    // ── Live preview (floating, bottom-right of canvas) ──
+    const previewFloat = document.getElementById('previewFloat');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const pctx = previewCanvas.getContext('2d');
+
+    function updatePreview() {
+      // Only show once there's an actual crop to preview
+      if (!rotatedCanvas || !cropActive || !ratio) {
+        previewFloat.classList.add('hidden');
+        return;
+      }
+      previewFloat.classList.remove('hidden');
+
+      // Fit the export aspect ratio inside a fixed display box
+      const full = calcOutputDims();
+      const ar = full.w / full.h;
+      const maxBox = 120; // CSS px
+      let cssW, cssH;
+      if (ar >= 1) { cssW = maxBox; cssH = Math.round(maxBox / ar); }
+      else { cssH = maxBox; cssW = Math.round(maxBox * ar); }
+
+      const dpr = window.devicePixelRatio || 1;
+      previewCanvas.style.width = cssW + 'px';
+      previewCanvas.style.height = cssH + 'px';
+      previewCanvas.width = Math.round(cssW * dpr);
+      previewCanvas.height = Math.round(cssH * dpr);
+
+      // Checkerboard so transparent areas (corners, safety margin, OOB) read clearly
+      if (!updatePreview._checker) {
+        const c = document.createElement('canvas');
+        c.width = 16; c.height = 16;
+        const x = c.getContext('2d');
+        x.fillStyle = '#2a2a3e'; x.fillRect(0, 0, 16, 16);
+        x.fillStyle = '#1e1e32'; x.fillRect(0, 0, 8, 8); x.fillRect(8, 8, 8, 8);
+        updatePreview._checker = c;
+      }
+      pctx.setTransform(1, 0, 0, 1, 0, 0);
+      pctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+      pctx.fillStyle = pctx.createPattern(updatePreview._checker, 'repeat');
+      pctx.fillRect(0, 0, previewCanvas.width, previewCanvas.height);
+
+      // Same pipeline as export, just lower resolution
+      const built = buildCroppedCanvas(previewCanvas.width);
+      pctx.drawImage(built.canvas, 0, 0, previewCanvas.width, previewCanvas.height);
+    }
+
+    exportBtn.addEventListener('click', () => {
+      if (!rotatedCanvas) return;
+
+      const built = buildCroppedCanvas();
+      const offscreen = built.canvas;
+      const out = { w: built.w, h: built.h, ppm: built.ppm };
+
+      // Export with pHYs DPI
+      offscreen.toBlob((blob) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const withDpi = insertPHYS(reader.result, out.ppm);
+          const finalBlob = new Blob([withDpi], { type: 'image/png' });
+          const url = URL.createObjectURL(finalBlob);
+          const a = document.createElement('a');
+          a.href = url;
+          const s = getCurrentSize();
+          let finalW = s.w;
+          let finalH = s.h;
+          if (edgeInset < 0) {
+            finalW += Math.abs(edgeInset) * 2;
+            finalH += Math.abs(edgeInset) * 2;
+          }
+          const fw = Number(finalW.toFixed(1));
+          const fh = Number(finalH.toFixed(1));
+          // Use preset name in filename (or 'magnet' for default)
+          let presetSlug = 'magnet';
+          const presetVal = presetSelect.value;
+          if (presetVal === 'default') {
+            presetSlug = 'magnet';
+          } else {
+            const pidx = parseInt(presetVal);
+            if (!isNaN(pidx) && pidx >= 0 && pidx < presets.length) {
+              // Sanitize preset name for filename: lowercase, replace non-alphanumeric with underscore
+              presetSlug = presets[pidx].name
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '_')
+                .replace(/^_|_$/g, '') || 'preset';
+            }
+          }
+          a.download = `${sourceBaseName}_${presetSlug}_${fw}x${fh}mm.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast();
+        };
+        reader.readAsArrayBuffer(blob);
+      }, 'image/png');
+    });
+
+    function showToast() {
+      const old = document.querySelector('.toast');
+      if (old) old.remove();
+      const s = getCurrentSize();
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+    <span class="toast-icon">✓</span>
+    <div class="toast-text">
+      <strong>Exported!</strong> Open EufyMake Studio → Import the PNG → it will auto-size to ${s.w}×${s.h}mm. Place it and print.
+    </div>`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 6000);
+    }
+
+    // ── Help Modal ──
+    document.getElementById('helpBtn').addEventListener('click', () => {
+      document.getElementById('helpModal').classList.remove('hidden');
+    });
+    document.getElementById('closeHelp').addEventListener('click', () => {
+      document.getElementById('helpModal').classList.add('hidden');
+    });
+    document.getElementById('helpModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) document.getElementById('helpModal').classList.add('hidden');
+    });
+
+    // Changelog modal
+    document.getElementById('changelogLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('changelogModal').classList.remove('hidden');
+    });
+    document.getElementById('closeChangelog').addEventListener('click', () => {
+      document.getElementById('changelogModal').classList.add('hidden');
+    });
+    document.getElementById('changelogModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) document.getElementById('changelogModal').classList.add('hidden');
+    });
+
+    // ── Background Removal (AI, browser-local) ──
+    let bgModel = null;
+    let bgProcessor = null;
+    let bgMode = 'fast'; // only 'fast' for now; HD is paused
+    let bgLoadedMode = null; // which mode's model is currently loaded
+    let bgCache = {}; // { mode: { maskData, resultCanvas } }
+    let rawMaskData = null;
+    let rawSrcCanvas = null;
+
+    const MODES = {
+      fast: {
+        name: 'Fast',
+        model: 'Xenova/modnet',
+        info: 'MODNet (~24MB) • Fast, portrait-optimized',
+        processorConfig: null // use default config from repo
+      }
+      // HD (RMBG-1.4) removed in v1.13: its license is non-commercial only.
+    };
+
+    // Edge refinement slider handlers
+    const thresholdSlider = document.getElementById('thresholdSlider');
+    const featherSlider = document.getElementById('featherSlider');
+    const erodeSlider = document.getElementById('erodeSlider');
+    const thresholdValueEl = document.getElementById('thresholdValue');
+    const featherValueEl = document.getElementById('featherValue');
+    const erodeValueEl = document.getElementById('erodeValue');
+    const edgeControls = document.getElementById('edgeControls');
+
+    function updateEdgeLabels() {
+      thresholdValueEl.textContent = thresholdSlider.value;
+      featherValueEl.textContent = featherSlider.value + ' px';
+      erodeValueEl.textContent = erodeSlider.value + ' px';
+    }
+
+    async function reprocessMask() {
+      if (!rawMaskData || !rawSrcCanvas || !bgRemoved) return;
+      const mw = rawSrcCanvas.width, mh = rawSrcCanvas.height;
+
+      let maskData = new Float32Array(rawMaskData.length);
+      for (let i = 0; i < rawMaskData.length; i++) maskData[i] = rawMaskData[i];
+
+      // Connected-component filtering: keep only the largest foreground region
+      {
+        const binary = new Uint8Array(maskData.length);
+        for (let i = 0; i < maskData.length; i++) binary[i] = maskData[i] > 100 ? 1 : 0;
+
+        const labels = new Int32Array(maskData.length);
+        let nextLabel = 1;
+        const regionSizes = [0];
+        const stack = [];
+        for (let y = 0; y < mh; y++) {
+          for (let x = 0; x < mw; x++) {
+            const idx = y * mw + x;
+            if (binary[idx] && !labels[idx]) {
+              const label = nextLabel++;
+              let size = 0;
+              stack.push(idx);
+              labels[idx] = label;
+              while (stack.length) {
+                const ci = stack.pop();
+                size++;
+                const cx = ci % mw, cy = (ci - cx) / mw;
+                for (let dy = -1; dy <= 1; dy++) {
+                  for (let dx = -1; dx <= 1; dx++) {
+                    if (!dx && !dy) continue;
+                    const nx = cx + dx, ny = cy + dy;
+                    if (nx >= 0 && nx < mw && ny >= 0 && ny < mh) {
+                      const ni = ny * mw + nx;
+                      if (binary[ni] && !labels[ni]) {
+                        labels[ni] = label;
+                        stack.push(ni);
+                      }
+                    }
+                  }
+                }
+              }
+              regionSizes.push(size);
+            }
+          }
+        }
+
+        let maxLabel = 1, maxSize = 0;
+        for (let l = 1; l < regionSizes.length; l++) {
+          if (regionSizes[l] > maxSize) { maxSize = regionSizes[l]; maxLabel = l; }
+        }
+
+        const sizeThreshold = mw * mh * 0.005;
+        for (let i = 0; i < maskData.length; i++) {
+          if (binary[i] && labels[i] !== maxLabel && regionSizes[labels[i]] < sizeThreshold) {
+            maskData[i] = 0;
+          }
+        }
+      }
+
+      // Hard mask cleanup (required as topology basis for hole-fill below)
+      {
+        for (let i = 0; i < maskData.length; i++) {
+          maskData[i] = maskData[i] > 120 ? 255 : 0;
+        }
+      }
+
+      // Hole filling: flood-fill background (alpha === 0) from the border; anything unreached is an internal hole.
+      {
+        const visited = new Uint8Array(maskData.length);
+        const stack = [];
+        const pushIfBg = (i) => {
+          if (!visited[i] && maskData[i] === 0) { visited[i] = 1; stack.push(i); }
+        };
+        for (let x = 0; x < mw; x++) { pushIfBg(x); pushIfBg((mh - 1) * mw + x); }
+        for (let y = 0; y < mh; y++) { pushIfBg(y * mw); pushIfBg(y * mw + mw - 1); }
+        while (stack.length) {
+          const ci = stack.pop();
+          const cx = ci % mw, cy = (ci - cx) / mw;
+          if (cx > 0) pushIfBg(ci - 1);
+          if (cx < mw - 1) pushIfBg(ci + 1);
+          if (cy > 0) pushIfBg(ci - mw);
+          if (cy < mh - 1) pushIfBg(ci + mw);
+        }
+        for (let i = 0; i < maskData.length; i++) {
+          if (maskData[i] === 0 && !visited[i]) maskData[i] = 255;
+        }
+      }
+
+      const erodeR = parseInt(erodeSlider.value);
+      if (erodeR > 0) {
+        const eroded = new Float32Array(maskData.length);
+        for (let y = 0; y < mh; y++) {
+          for (let x = 0; x < mw; x++) {
+            let minVal = 255;
+            for (let dy = -erodeR; dy <= erodeR; dy++) {
+              for (let dx = -erodeR; dx <= erodeR; dx++) {
+                if (dx * dx + dy * dy > erodeR * erodeR) continue;
+                const nx = x + dx, ny = y + dy;
+                if (nx >= 0 && nx < mw && ny >= 0 && ny < mh) {
+                  minVal = Math.min(minVal, maskData[ny * mw + nx]);
+                } else {
+                  minVal = 0;
+                }
+              }
+            }
+            eroded[y * mw + x] = minVal;
+          }
+        }
+        maskData = eroded;
+      }
+
+      const featherR = parseInt(featherSlider.value);
+      if (featherR > 0) {
+        const kSize = featherR * 2 + 1;
+        const kernel = new Float32Array(kSize);
+        const sigma = featherR / 2;
+        let kSum = 0;
+        for (let i = 0; i < kSize; i++) {
+          const d = i - featherR;
+          kernel[i] = Math.exp(-(d * d) / (2 * sigma * sigma));
+          kSum += kernel[i];
+        }
+        for (let i = 0; i < kSize; i++) kernel[i] /= kSum;
+        const temp = new Float32Array(maskData.length);
+        for (let y = 0; y < mh; y++) {
+          for (let x = 0; x < mw; x++) {
+            let sum = 0;
+            for (let k = 0; k < kSize; k++) {
+              const nx = Math.min(mw - 1, Math.max(0, x + k - featherR));
+              sum += maskData[y * mw + nx] * kernel[k];
+            }
+            temp[y * mw + x] = sum;
+          }
+        }
+        for (let y = 0; y < mh; y++) {
+          for (let x = 0; x < mw; x++) {
+            let sum = 0;
+            for (let k = 0; k < kSize; k++) {
+              const ny = Math.min(mh - 1, Math.max(0, y + k - featherR));
+              sum += temp[ny * mw + x] * kernel[k];
+            }
+            maskData[y * mw + x] = sum;
+          }
+        }
+      }
+
+      const threshold = parseInt(thresholdSlider.value);
+      if (threshold > 0) {
+        for (let i = 0; i < maskData.length; i++) {
+          if (maskData[i] < threshold) {
+            maskData[i] = 0;
+          } else {
+            maskData[i] = Math.min(255, ((maskData[i] - threshold) / (255 - threshold)) * 255);
+          }
+        }
+      }
+
+      const resultCanvas = document.createElement('canvas');
+      resultCanvas.width = mw;
+      resultCanvas.height = mh;
+      const rctx = resultCanvas.getContext('2d');
+      rctx.drawImage(rawSrcCanvas, 0, 0);
+      const imageData = rctx.getImageData(0, 0, mw, mh);
+      for (let i = 0; i < maskData.length; i++) {
+        imageData.data[i * 4 + 3] = Math.round(Math.max(0, Math.min(255, maskData[i])));
+      }
+      rctx.putImageData(imageData, 0, 0);
+
+      bgRemovedImg = resultCanvas;
+      buildRotatedCanvas();
+      render();
+    }
+
+    let reprocessTimer = null;
+    function debouncedReprocess() {
+      updateEdgeLabels();
+      clearTimeout(reprocessTimer);
+      reprocessTimer = setTimeout(reprocessMask, 80);
+    }
+
+    thresholdSlider.addEventListener('input', debouncedReprocess);
+    featherSlider.addEventListener('input', debouncedReprocess);
+    erodeSlider.addEventListener('input', debouncedReprocess);
+
+    // ── Eraser Tool ──
+    const eraserToggle = document.getElementById('eraserToggle');
+    const eraserSizeSlider = document.getElementById('eraserSize');
+    const eraserSizeValue = document.getElementById('eraserSizeValue');
+    const eraserCursor = document.getElementById('eraserCursor');
+
+    eraserSizeSlider.addEventListener('input', () => {
+      eraserSizeValue.textContent = eraserSizeSlider.value + ' px';
+      updateEraserCursorSize();
+    });
+
+    function updateEraserCursorSize() {
+      const sz = parseInt(eraserSizeSlider.value) * dm.scale;
+      eraserCursor.style.width = sz + 'px';
+      eraserCursor.style.height = sz + 'px';
+    }
+
+    eraserToggle.addEventListener('click', () => {
+      eraserActive = !eraserActive;
+      eraserToggle.textContent = eraserActive ? 'Eraser On' : 'Eraser Off';
+      eraserToggle.classList.toggle('active', eraserActive);
+      canvasEl.style.cursor = eraserActive ? 'none' : '';
+      eraserCursor.style.display = eraserActive ? 'block' : 'none';
+      if (eraserActive) updateEraserCursorSize();
+    });
+
+    function eraseAt(canvasX, canvasY) {
+      if (!bgRemovedImg || !bgRemoved) return;
+      const imgX = (canvasX - dm.dx) / dm.scale;
+      const imgY = (canvasY - dm.dy) / dm.scale;
+      const eff = getEffectiveSize();
+      let srcX, srcY;
+      if (rotation === 0) { srcX = imgX; srcY = imgY; }
+      else if (rotation === 90) { srcX = imgY; srcY = eff.w - imgX; }
+      else if (rotation === 180) { srcX = eff.w - imgX; srcY = eff.h - imgY; }
+      else { srcX = eff.h - imgY; srcY = imgX; }
+
+      const brushR = parseInt(eraserSizeSlider.value) / 2;
+      const sw = bgRemovedImg.width, sh = bgRemovedImg.height;
+      const rctx = bgRemovedImg.getContext('2d');
+      const x0 = Math.max(0, Math.floor(srcX - brushR));
+      const y0 = Math.max(0, Math.floor(srcY - brushR));
+      const x1 = Math.min(sw, Math.ceil(srcX + brushR));
+      const y1 = Math.min(sh, Math.ceil(srcY + brushR));
+      if (x1 <= x0 || y1 <= y0) return;
+
+      const imageData = rctx.getImageData(x0, y0, x1 - x0, y1 - y0);
+      const r2 = brushR * brushR;
+      for (let py = y0; py < y1; py++) {
+        for (let px = x0; px < x1; px++) {
+          const dx = px - srcX, dy = py - srcY;
+          if (dx * dx + dy * dy <= r2) {
+            const idx = ((py - y0) * (x1 - x0) + (px - x0)) * 4;
+            imageData.data[idx + 3] = 0;
+          }
+        }
+      }
+      rctx.putImageData(imageData, x0, y0);
+      if (rawMaskData) {
+        for (let py = y0; py < y1; py++) {
+          for (let px = x0; px < x1; px++) {
+            const dx = px - srcX, dy = py - srcY;
+            if (dx * dx + dy * dy <= r2) {
+              rawMaskData[py * sw + px] = 0;
+            }
+          }
+        }
+      }
+      buildRotatedCanvas();
+      render();
+    }
+
+    async function checkWebGPU() {
+      if (!navigator.gpu) return false;
+      try {
+        const adapter = await navigator.gpu.requestAdapter();
+        return !!adapter;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    async function loadBgModel(mode, progressCb) {
+      const { AutoModel, AutoProcessor, env } = await import(
+        'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3'
+      );
+
+      // Configure environment for browser
+      env.allowLocalModels = false;
+      env.useBrowserCache = true;
+
+      const hasWebGPU = await checkWebGPU();
+      const device = hasWebGPU ? 'webgpu' : 'wasm';
+      if (hasWebGPU) {
+        document.getElementById('mobileNotice').classList.remove('hidden');
+      }
+
+      const modelId = MODES[mode].model;
+      bgModel = await AutoModel.from_pretrained(modelId, {
+        device: device,
+        progress_callback: progressCb,
+      });
+
+      const procOpts = MODES[mode].processorConfig
+        ? { config: MODES[mode].processorConfig }
+        : {};
+      bgProcessor = await AutoProcessor.from_pretrained(modelId, procOpts);
+      bgLoadedMode = mode;
+    }
+
+    async function removeBg() {
+      const { RawImage } = await import(
+        'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3'
+      );
+      // Work on original (non-rotated) image
+      const srcCanvas = document.createElement('canvas');
+      srcCanvas.width = img.naturalWidth;
+      srcCanvas.height = img.naturalHeight;
+      const sctx = srcCanvas.getContext('2d');
+      sctx.drawImage(img, 0, 0);
+
+      const image = await RawImage.fromCanvas(srcCanvas);
+      const { pixel_values } = await bgProcessor(image);
+      const { output } = await bgModel({ input: pixel_values });
+
+      // Convert model output to mask and resize to original dimensions
+      const mask = await RawImage.fromTensor(
+        output[0].mul(255).to('uint8')
+      ).resize(image.width, image.height);
+
+      // Store raw mask for re-processing via edge sliders
+      rawMaskData = new Float32Array(mask.data.length);
+      for (let i = 0; i < mask.data.length; i++) rawMaskData[i] = mask.data[i];
+      rawSrcCanvas = srcCanvas;
+
+      // Apply mask with default post-processing (connected-component + threshold + erode)
+      bgRemoved = true;
+      reprocessMask();
+
+      // Cache the result
+      bgCache[bgMode] = {
+        maskData: new Float32Array(rawMaskData),
+        resultCanvas: bgRemovedImg
+      };
+
+      return bgRemovedImg;
+    }
+
+    // Mode selection
+    document.getElementById('bgModeToggle').addEventListener('click', (e) => {
+      const btn = e.target.closest('.mode-btn');
+      if (!btn) return;
+      if (btn.classList.contains('mode-off')) {
+        const info = document.getElementById('modeInfo');
+        info.textContent = btn.dataset.tip;
+        clearTimeout(info._resetTimer);
+        info._resetTimer = setTimeout(() => { info.textContent = MODES[bgMode].info; }, 6000);
+        return;
+      }
+
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      bgMode = btn.dataset.mode;
+      document.getElementById('modeInfo').textContent = MODES[bgMode].info;
+
+      // Reset remove button if mode changed
+      if (bgRemoved) {
+        const btnRem = document.getElementById('bgRemoveBtn');
+        if (bgCache[bgMode]) {
+          btnRem.textContent = '✓ Background Removed (' + MODES[bgMode].name + ')';
+          btnRem.disabled = true;
+          // Switch to cached result
+          rawMaskData = new Float32Array(bgCache[bgMode].maskData);
+          bgRemovedImg = bgCache[bgMode].resultCanvas;
+          bgRemoved = true;
+          buildRotatedCanvas();
+          render();
+        } else {
+          btnRem.textContent = '✂ Remove Background (' + MODES[bgMode].name + ')';
+          btnRem.disabled = false;
+        }
+      }
+    });
+
+    document.getElementById('bgRemoveBtn').addEventListener('click', async () => {
+      if (!img) return;
+      const btn = document.getElementById('bgRemoveBtn');
+      const restoreBtn = document.getElementById('bgRestoreBtn');
+      const progress = document.getElementById('bgProgress');
+      const progressBar = document.getElementById('bgProgressBar');
+      const progressText = document.getElementById('bgProgressText');
+
+      // If we already have a cached result for this mode, switch to it
+      if (bgCache[bgMode]) {
+        rawMaskData = new Float32Array(bgCache[bgMode].maskData);
+        bgRemovedImg = bgCache[bgMode].resultCanvas;
+        bgRemoved = true;
+        buildRotatedCanvas();
+        render();
+        btn.textContent = '✓ Background Removed (' + MODES[bgMode].name + ')';
+        btn.disabled = true;
+        restoreBtn.classList.remove('hidden');
+        edgeControls.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Processing…';
+      progress.classList.remove('hidden');
+      progressBar.style.width = '0%';
+
+      try {
+        // Check if we need to load/switch model
+        if (!bgModel || bgLoadedMode !== bgMode) {
+          progressText.textContent = 'Loading ' + MODES[bgMode].name + ' model…';
+          await loadBgModel(bgMode, (p) => {
+            if (p.status === 'progress' && p.progress) {
+              const pct = Math.round(p.progress);
+              progressBar.style.width = pct + '%';
+              progressText.textContent = `Downloading model… ${pct}%`;
+            }
+          });
+        }
+
+        progressText.textContent = 'Removing background…';
+        progressBar.style.width = '100%';
+
+        // Yield to UI
+        await new Promise(r => setTimeout(r, 50));
+
+        bgRemovedImg = await removeBg();
+        bgRemoved = true;
+        buildRotatedCanvas();
+        render();
+
+        btn.textContent = '✓ Background Removed (' + MODES[bgMode].name + ')';
+        restoreBtn.classList.remove('hidden');
+        edgeControls.classList.remove('hidden');
+        progress.classList.add('hidden');
+      } catch (err) {
+        console.error('BG removal failed:', err);
+        btn.textContent = '✂ Remove Background';
+        btn.disabled = false;
+        progressText.textContent = 'Failed — ' + (err.message || 'unknown error');
+        setTimeout(() => progress.classList.add('hidden'), 4000);
+      }
+    });
+
+    document.getElementById('bgRestoreBtn').addEventListener('click', () => {
+      bgRemoved = false;
+      bgCache = {}; // Clear cache when restoring original? Or keep it? 
+      // Let's clear it to allow fresh start if user restores.
+      document.getElementById('bgRemoveBtn').textContent = '✂ Remove Background';
+      document.getElementById('bgRemoveBtn').disabled = false;
+      document.getElementById('bgRestoreBtn').classList.add('hidden');
+      edgeControls.classList.add('hidden');
+      thresholdSlider.value = 30;
+      featherSlider.value = 0;
+      erodeSlider.value = 2;
+      updateEdgeLabels();
+      eraserActive = false;
+      eraserDrawing = false;
+      eraserToggle.textContent = 'Eraser Off';
+      eraserToggle.classList.remove('active');
+      eraserCursor.style.display = 'none';
+      canvasEl.style.cursor = '';
+      buildRotatedCanvas();
+      render();
+    });
+
+    // ── BG Collapsible Toggle ──
+    const bgToggleHeader = document.getElementById('bgToggleHeader');
+    const bgToggleIcon = document.getElementById('bgToggleIcon');
+    const aiControlsWrapper = document.getElementById('aiControlsWrapper');
+    
+    function updateBgToggle(isCollapsed) {
+      if (isCollapsed) {
+        aiControlsWrapper.style.display = 'none';
+        bgToggleIcon.style.transform = 'rotate(-90deg)';
+      } else {
+        aiControlsWrapper.style.display = 'block';
+        bgToggleIcon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    bgToggleHeader.addEventListener('click', () => {
+      const isCollapsed = aiControlsWrapper.style.display === 'none';
+      updateBgToggle(!isCollapsed);
+      try { localStorage.setItem('gammacrop_bgCollapsed', !isCollapsed); } catch (e) {}
+    });
+
+    try {
+      const stored = localStorage.getItem('gammacrop_bgCollapsed');
+      const isCollapsed = stored === null ? true : stored === 'true';
+      updateBgToggle(isCollapsed);
+    } catch (e) {
+      updateBgToggle(true);
+    }
+
+    // ── Preset Event Listeners ──
+    presetSelect.addEventListener('change', () => {
+      const val = presetSelect.value;
+      if (val === 'default') {
+        applyPreset({ ratio: '5:7', customW: 50, customH: 70, radius: 2.0, margin: 0, dpi: 600 });
+        try { localStorage.setItem('gammacrop_lastPreset', 'default'); } catch (e) {}
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else {
+        const idx = parseInt(val);
+        if (!isNaN(idx) && idx >= 0 && idx < presets.length) {
+          applyPreset(presets[idx]);
+          try { localStorage.setItem('gammacrop_lastPreset', presets[idx].name); } catch (e) {}
+          const params = new URLSearchParams(window.location.search);
+          params.set('preset', presets[idx].name);
+          window.history.replaceState({}, document.title, window.location.pathname + '?' + params.toString());
+        }
+      }
+    });
+    
+    savePresetBtn.addEventListener('click', handleSavePreset);
+    deletePresetBtn.addEventListener('click', handleDeletePreset);
+    sharePresetBtn.addEventListener('click', handleSharePreset);
+
+    // ── Init ──
+    (async () => {
+      loadPresets();
+      const urlApplied = await checkUrlForPreset();
+
+      if (!urlApplied) {
+        // Restore persisted Custom Size
+        try {
+          const savedW = localStorage.getItem('gammacrop_customWidth');
+          const savedH = localStorage.getItem('gammacrop_customHeight');
+          if (savedW !== null) customWidthInput.value = savedW;
+          if (savedH !== null) customHeightInput.value = savedH;
+        } catch (e) { }
+
+        // Restore persisted Corner Radius
+        try {
+          const savedR = localStorage.getItem('gammacrop_cornerRadius');
+          if (savedR !== null) {
+            const v = parseInt(savedR);
+            if (v >= 0 && v <= 50) {
+              radiusSlider.value = v;
+              cornerRadius = v / 10;
+              radiusValue.textContent = cornerRadius.toFixed(1) + ' mm';
+            }
+          }
+        } catch (e) { }
+
+        // Restore persisted Safety Margin
+        try {
+          const saved = localStorage.getItem('gammacrop_safetyMargin');
+          if (saved !== null) {
+            const v = parseInt(saved);
+            if (v >= -10 && v <= 10) {
+              insetSlider.value = v;
+              edgeInset = v / 10;
+              insetValue.textContent = (edgeInset > 0 ? '+' : '') + edgeInset.toFixed(1) + ' mm';
+            }
+          }
+        } catch (e) { }
+
+        // Restore persisted DPI
+        try {
+          const savedDpi = localStorage.getItem('gammacrop_dpi');
+          if (savedDpi !== null) {
+            if (Array.from(dpiSelect.options).some(o => o.value === savedDpi)) {
+              dpiSelect.value = savedDpi;
+              dpi = parseInt(savedDpi);
+            }
+          }
+        } catch (e) { }
+
+        // Restore persisted Ratio Selection
+        try {
+          const savedRatio = localStorage.getItem('gammacrop_selectedRatio');
+          if (savedRatio) {
+            const btn = ratioRow.querySelector(`[data-ratio="${savedRatio}"]`);
+            if (btn) btn.click();
+          }
+        } catch (e) { }
+
+        // Restore active preset dropdown selection
+        try {
+          const lastPreset = localStorage.getItem('gammacrop_lastPreset');
+          if (lastPreset && lastPreset !== 'default') {
+            const idx = presets.findIndex(p => p.name === lastPreset);
+            if (idx !== -1) {
+              presetSelect.value = idx;
+            }
+          }
+        } catch (e) { }
+      }
+
+      updateOutputDisplay();
+    })();
+  </script>
+</body>
+
+</html>
