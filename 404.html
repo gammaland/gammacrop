@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Page Not Found | GammaCrop</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --surface: #111125;
+      --surface-high: #28283d;
+      --primary: #a9c8fc;
+      --primary-container: #0f3460;
+      --text: #e2e0fc;
+      --text-muted: #8d919a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px 16px;
+    }
+
+    .wrap {
+      max-width: 440px;
+    }
+
+    img {
+      width: 56px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.02em;
+    }
+
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 8px 0 16px;
+    }
+
+    p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    a.btn {
+      display: inline-block;
+      background: var(--primary-container);
+      color: var(--primary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      padding: 12px 24px;
+      border: 1px solid var(--primary);
+    }
+
+    a.btn:hover {
+      background: var(--surface-high);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <img src="/gl-brand-dark-72px.png" alt="GammaLand">
+    <h1>404</h1>
+    <h2>Page not found</h2>
+    <p>This page doesn't exist. GammaCrop is a single page: rounded-corner cropping and local AI background
+      removal for UV-printed magnets.</p>
+    <a class="btn" href="/">Open GammaCrop</a>
+  </div>
+</body>
+
+</html>

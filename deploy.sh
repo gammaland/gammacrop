@@ -18,6 +18,11 @@ cp sitemap.xml deploy/
 cp robots.txt deploy/
 cp overspray-web.webp deploy/
 cp tpu-mask.webp deploy/
+cp 404.html deploy/
+
+# /blog/ on the tool subdomain redirects to the main-site blog
+mkdir -p deploy/blog
+cp blog/index.html deploy/blog/
 
 # Copy preview image as standardized og-image
 cp picture-loaded.jpg deploy/og-image.jpg

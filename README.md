@@ -34,6 +34,7 @@ The AI models and Transformers.js load from public CDNs on first use, so the fir
 | `index.html` | The whole app (HTML + CSS + JS) |
 | `CHANGELOG.md` | Release notes, newest first |
 | `llms.txt`, `robots.txt`, `sitemap.xml` | SEO / crawler files |
+| `404.html` | Not-found page (also makes Cloudflare Pages return real 404s) |
 | `blog/` | Redirect to the dev blog |
 | `blog-pic/` | Screenshots referenced from the changelog |
 | `deploy.sh` | Rebuilds `deploy/` (the publish directory) from the source files |

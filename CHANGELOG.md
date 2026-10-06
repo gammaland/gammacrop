@@ -12,6 +12,7 @@ When releasing: add the entry to the Changelog modal in `index.html` and to this
 - **Clearer Fast vs. HD** — Fast mode (MODNet) is now clearly labeled as portrait-optimized, with a pointer to HD for pets, products, and art.
 - **Internal:** IS-Net general-use weights ([DIS](https://github.com/xuebinqin/DIS), Apache-2.0; ONNX export from [rembg](https://github.com/danielgatis/rembg)) are self-hosted on Cloudflare R2 at `models.gammaland3d.com/isnet-general-use/` in a Hugging Face-style layout.
 - **Internal:** Transformers.js upgraded from 3.x to 4.3.1 (pinned). The 3.x WebGPU backend can't run IS-Net (MaxPool `ceil_mode`).
+- **Internal:** Added `404.html`. Without it, Cloudflare Pages served the homepage with a 200 for any unknown path (soft 404s, e.g. `/e1-jig`). `/blog/` now ships its redirect to the main-site blog.
 
 ## v1.13 — October 6, 2026
 
