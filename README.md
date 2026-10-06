@@ -32,6 +32,7 @@ The AI models and Transformers.js load from public CDNs on first use, so the fir
 | Path | What it is |
 |------|------------|
 | `index.html` | The whole app (HTML + CSS + JS) |
+| `CHANGELOG.md` | Release notes, newest first |
 | `llms.txt`, `robots.txt`, `sitemap.xml` | SEO / crawler files |
 | `blog/` | Redirect to the dev blog |
 | `blog-pic/` | Screenshots referenced from the changelog |
