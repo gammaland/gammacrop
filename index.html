@@ -36,7 +36,7 @@
   "applicationCategory": "DesignApplication",
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "Free browser-based image tool with local AI background removal (MODNet), WebGPU-accelerated, edge refinement, automatic hole filling, manual eraser, safety margin (positive inset or negative bleeding), preset management with one-click URL sharing, zoom & pan, custom dimensions, smart filenames, overflow crop, position controls (Fill, Center, Reset), arrow-key nudge, out-of-bounds edge warning, and rounded-corner cropping for EufyMake E1 UV printer fridge magnets. Save your workflow as named presets and share them via URL — exported filenames automatically use your preset name. AI runs entirely in your browser — no uploads. Export print-ready PNG with embedded DPI metadata. Works on desktop and mobile.",
+  "description": "Free browser-based image tool with local AI background removal (Fast: MODNet, HD: IS-Net), WebGPU-accelerated, edge refinement, automatic hole filling, manual eraser, safety margin (positive inset or negative bleeding), preset management with one-click URL sharing, zoom & pan, custom dimensions, smart filenames, overflow crop, position controls (Fill, Center, Reset), arrow-key nudge, out-of-bounds edge warning, and rounded-corner cropping for EufyMake E1 UV printer fridge magnets. Save your workflow as named presets and share them via URL — exported filenames automatically use your preset name. AI runs entirely in your browser — no uploads. Export print-ready PNG with embedded DPI metadata. Works on desktop and mobile.",
   "author": { "@type": "Organization", "name": "GammaLand", "url": "https://www.gammaland3d.com" }
 }
 </script>
@@ -68,7 +68,7 @@
       "name": "Can GammaCrop remove image backgrounds for magnet printing?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. GammaCrop removes backgrounds with the MODNet AI model (~24MB), which runs entirely in your browser with WebGPU acceleration (or WebAssembly fallback). Unlike EufyMake Studio's built-in remover (which costs credits and uploads to a server), GammaCrop is free, unlimited, and fully private — your images never leave your device. Works on desktop and mobile."
+        "text": "Yes. GammaCrop offers two AI background removal modes — Fast (MODNet, ~24MB) for quick results, and HD (IS-Net, ~179MB) for best quality on complex edges. Both run entirely in your browser with WebGPU acceleration (or WebAssembly fallback). Unlike EufyMake Studio's built-in remover (which costs credits and uploads to a server), GammaCrop is free, unlimited, and fully private — your images never leave your device. Works on desktop and mobile."
       }
     },
     {
@@ -1102,49 +1102,18 @@
       color: var(--primary);
     }
 
-    /* Unavailable mode: greyed out, explains why on hover/focus */
-    .mode-btn.mode-off {
-      position: relative;
-      color: color-mix(in srgb, var(--text-dim) 40%, transparent);
-      cursor: not-allowed;
-    }
-
-    .mode-btn.mode-off:hover {
-      color: color-mix(in srgb, var(--text-dim) 40%, transparent);
-    }
-
-    .mode-btn.mode-off::after {
-      content: attr(data-tip);
-      position: absolute;
-      top: calc(100% + 6px);
-      right: 0;
-      width: 220px;
-      padding: 8px 10px;
-      background: var(--surface);
-      border: 1px solid var(--outline);
-      color: var(--text-muted);
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 400;
-      line-height: 1.5;
-      text-align: left;
-      text-transform: none;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.15s;
-      z-index: 20;
-    }
-
-    .mode-btn.mode-off:hover::after,
-    .mode-btn.mode-off:focus-visible::after {
-      opacity: 1;
-    }
-
     .mode-info {
       font-size: 10px;
       color: var(--text-dim);
       margin-bottom: 10px;
       text-align: center;
+      line-height: 1.6;
+    }
+
+    .mode-info .mode-hint {
+      color: #ffd23c;
+      font-weight: 700;
+      font-size: 11px;
     }
 
     /* ── Footer ── */
@@ -1585,11 +1554,10 @@
           <div class="ai-controls">
             <div class="mode-toggle" id="bgModeToggle">
               <button class="mode-btn active" data-mode="fast"
-                title="MODNet: Fast, optimized for portraits (~24MB)">Fast</button>
-              <button class="mode-btn mode-off" data-mode="hd" aria-disabled="true"
-                data-tip="HD mode is paused. Its model (RMBG-1.4) is licensed for non-commercial use only, and the license-friendly alternatives are too heavy (200MB+) to run well in the browser yet. Fast mode still runs 100% locally.">HD</button>
+                title="MODNet: Fast, optimized for portraits (~24MB). For pets, products and art, use HD.">Fast</button>
+              <button class="mode-btn" data-mode="hd" title="IS-Net: Best quality for all subjects (~179MB)">HD</button>
             </div>
-            <div class="mode-info" id="modeInfo">MODNet (~24MB) • Fast, portrait-optimized</div>
+            <div class="mode-info" id="modeInfo">MODNet (~24MB) • <span class="mode-hint">Portrait-optimized</span><br>For pets, products &amp; art, use HD</div>
 
             <button class="bg-btn" id="bgRemoveBtn" disabled>✂ Remove Background</button>
             <button class="bg-btn bg-restore hidden" id="bgRestoreBtn">↩ Restore Original</button>
@@ -1835,9 +1803,9 @@
 
       <div class="faq-item">
         <h3>Can GammaCrop remove image backgrounds for magnet printing?</h3>
-        <p>Yes. GammaCrop removes backgrounds with the MODNet AI model (~24MB), which runs entirely in your
-          browser with WebGPU acceleration (or WebAssembly fallback). The previous HD mode is paused because its model
-          is licensed for non-commercial use only. Unlike EufyMake Studio&rsquo;s built-in remover
+        <p>Yes. GammaCrop offers two AI background removal modes &mdash; Fast (MODNet, ~24MB) for quick results, and HD
+          (IS-Net, ~179MB) for best quality on complex edges like hair, fur, or illustrations. Both run entirely in your
+          browser with WebGPU acceleration (or WebAssembly fallback). Unlike EufyMake Studio&rsquo;s built-in remover
           (which costs credits and uploads to a server), GammaCrop is free, unlimited, and fully private &mdash; your
           images never leave your device. Works on desktop and mobile.</p>
       </div>
@@ -1908,7 +1876,7 @@
       <h2>Quick Start</h2>
       <ol>
         <li>Drop an image → pick your magnet size</li>
-        <li><strong>Optional:</strong> Remove background with AI</li>
+        <li><strong>Optional:</strong> Remove background with AI (Fast or HD mode)</li>
         <li>Adjust corner radius & safety margin</li>
         <li><strong>Export PNG</strong> → import into Studio → done!</li>
       </ol>
@@ -1931,6 +1899,12 @@
     <div class="modal">
       <h2>Changelog</h2>
       <div class="changelog">
+        <div class="changelog-entry">
+          <h3>v1.14 &mdash; October 6, 2026</h3>
+          <ul>
+            <li><strong>HD Mode Is Back</strong> &mdash; HD background removal now uses IS-Net (Apache-2.0), replacing RMBG-1.4, whose license is non-commercial only. Quality is on par for illustrations, products, and fur. Still 100% local; the ~179MB model downloads once and is cached.</li>
+          </ul>
+        </div>
         <div class="changelog-entry">
           <h3>v1.13 &mdash; October 6, 2026</h3>
           <ul>
@@ -3733,10 +3707,13 @@
     });
 
     // ── Background Removal (AI, browser-local) ──
+    // v4 needed: IS-Net uses MaxPool ceil_mode, unsupported by the v3 WebGPU backend
+    const TRANSFORMERS_URL = 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.1';
     let bgModel = null;
     let bgProcessor = null;
-    let bgMode = 'fast'; // only 'fast' for now; HD is paused
+    let bgMode = 'fast'; // 'fast' | 'hd'
     let bgLoadedMode = null; // which mode's model is currently loaded
+    let bgOnGpu = true; // false when running on the WebAssembly (CPU) fallback
     let bgCache = {}; // { mode: { maskData, resultCanvas } }
     let rawMaskData = null;
     let rawSrcCanvas = null;
@@ -3745,10 +3722,19 @@
       fast: {
         name: 'Fast',
         model: 'Xenova/modnet',
-        info: 'MODNet (~24MB) • Fast, portrait-optimized',
+        info: 'MODNet (~24MB) • <span class="mode-hint">Portrait-optimized</span><br>For pets, products &amp; art, use HD', // HTML
         processorConfig: null // use default config from repo
+      },
+      hd: {
+        name: 'HD',
+        // IS-Net general-use (Apache-2.0), self-hosted on R2 in HF-style layout.
+        // Replaces RMBG-1.4 (v1.14), whose license is non-commercial only.
+        model: 'isnet-general-use',
+        host: 'https://models.gammaland3d.com/',
+        dtype: 'fp32',
+        info: 'IS-Net (~179MB) • Best quality, all subjects', // HTML
+        processorConfig: null
       }
-      // HD (RMBG-1.4) removed in v1.13: its license is non-commercial only.
     };
 
     // Edge refinement slider handlers
@@ -4034,9 +4020,7 @@
     }
 
     async function loadBgModel(mode, progressCb) {
-      const { AutoModel, AutoProcessor, env } = await import(
-        'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3'
-      );
+      const { AutoModel, AutoProcessor, env } = await import(TRANSFORMERS_URL);
 
       // Configure environment for browser
       env.allowLocalModels = false;
@@ -4048,23 +4032,29 @@
         document.getElementById('mobileNotice').classList.remove('hidden');
       }
 
-      const modelId = MODES[mode].model;
-      bgModel = await AutoModel.from_pretrained(modelId, {
-        device: device,
-        progress_callback: progressCb,
-      });
+      const M = MODES[mode];
+      if (bgModel) { try { await bgModel.dispose(); } catch (e) { } bgModel = null; }
 
-      const procOpts = MODES[mode].processorConfig
-        ? { config: MODES[mode].processorConfig }
-        : {};
-      bgProcessor = await AutoProcessor.from_pretrained(modelId, procOpts);
+      // Self-hosted models: point the HF-style loader at our own host, then restore
+      const hfHost = env.remoteHost, hfPath = env.remotePathTemplate;
+      if (M.host) { env.remoteHost = M.host; env.remotePathTemplate = '{model}/'; }
+      try {
+        bgModel = await AutoModel.from_pretrained(M.model, {
+          device: device,
+          ...(M.dtype ? { dtype: M.dtype } : {}),
+          progress_callback: progressCb,
+        });
+        const procOpts = M.processorConfig ? { config: M.processorConfig } : {};
+        bgProcessor = await AutoProcessor.from_pretrained(M.model, procOpts);
+      } finally {
+        env.remoteHost = hfHost; env.remotePathTemplate = hfPath;
+      }
       bgLoadedMode = mode;
+      bgOnGpu = hasWebGPU;
     }
 
     async function removeBg() {
-      const { RawImage } = await import(
-        'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3'
-      );
+      const { RawImage } = await import(TRANSFORMERS_URL);
       // Work on original (non-rotated) image
       const srcCanvas = document.createElement('canvas');
       srcCanvas.width = img.naturalWidth;
@@ -4074,11 +4064,14 @@
 
       const image = await RawImage.fromCanvas(srcCanvas);
       const { pixel_values } = await bgProcessor(image);
-      const { output } = await bgModel({ input: pixel_values });
+      // Input/output names differ per model (MODNet: input/output, IS-Net: input_image/output_image)
+      const session = bgModel.sessions.model;
+      const outputs = await bgModel({ [session.inputNames[0]]: pixel_values });
+      const output = outputs[session.outputNames[0]];
 
       // Convert model output to mask and resize to original dimensions
       const mask = await RawImage.fromTensor(
-        output[0].mul(255).to('uint8')
+        output[0].clamp(0, 1).mul(255).to('uint8')
       ).resize(image.width, image.height);
 
       // Store raw mask for re-processing via edge sliders
@@ -4103,18 +4096,11 @@
     document.getElementById('bgModeToggle').addEventListener('click', (e) => {
       const btn = e.target.closest('.mode-btn');
       if (!btn) return;
-      if (btn.classList.contains('mode-off')) {
-        const info = document.getElementById('modeInfo');
-        info.textContent = btn.dataset.tip;
-        clearTimeout(info._resetTimer);
-        info._resetTimer = setTimeout(() => { info.textContent = MODES[bgMode].info; }, 6000);
-        return;
-      }
 
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       bgMode = btn.dataset.mode;
-      document.getElementById('modeInfo').textContent = MODES[bgMode].info;
+      document.getElementById('modeInfo').innerHTML = MODES[bgMode].info;
 
       // Reset remove button if mode changed
       if (bgRemoved) {
@@ -4175,7 +4161,9 @@
           });
         }
 
-        progressText.textContent = 'Removing background…';
+        progressText.textContent = (bgMode === 'hd' && !bgOnGpu)
+          ? 'Removing background… (no GPU, may take ~1 min)'
+          : 'Removing background…';
         progressBar.style.width = '100%';
 
         // Yield to UI

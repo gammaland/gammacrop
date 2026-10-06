@@ -1,12 +1,12 @@
 # GammaCrop
 
-> Free browser-based image tool for EufyMake E1 UV printer fridge magnets. Local AI background removal with two modes (MODNet), WebGPU-accelerated with WebAssembly fallback, edge refinement, automatic internal hole filling, manual eraser, safety margin (positive for inset, negative for bleeding), zoom & pan, custom dimensions, preset management with one-click sharing, smart filenames, overflow crop, and rounded-corner cropping. No images are ever uploaded. Works on desktop and mobile.
+> Free browser-based image tool for EufyMake E1 UV printer fridge magnets. Local AI background removal with two modes (Fast: MODNet, HD: IS-Net), WebGPU-accelerated with WebAssembly fallback, edge refinement, automatic internal hole filling, manual eraser, safety margin (positive for inset, negative for bleeding), zoom & pan, custom dimensions, preset management with one-click sharing, smart filenames, overflow crop, and rounded-corner cropping. No images are ever uploaded. Works on desktop and mobile.
 
 ## Tools
 
 ### Magnet Crop Tool - tool.gammaland3d.com
 - Crop to exact magnet dimensions: 50x70mm (5:7), 70x50mm (7:5), 57x57mm (1:1), or enter any custom mm size
-- AI background removal: MODNet (~24MB). The former HD mode (RMBG-1.4) is paused because its model license is non-commercial only
+- AI background removal: Fast mode (MODNet, ~24MB) or HD mode (IS-Net, ~179MB)
 - WebGPU hardware acceleration with automatic WASM fallback
 - Edge refinement (threshold, feather, erode) and manual eraser (desktop only)
 - Automatic internal hole filling: transparent patches inside the subject (e.g. a face or body region the AI mis-segmented) are flood-filled to opaque, preventing "swiss-cheese" mask artifacts on hand-drawn / illustrated subjects
@@ -21,7 +21,7 @@
 
 ## How background removal works
 
-Background removal uses MODNet (~24MB). The model downloads once, is cached by the browser, and runs locally via WebGPU (GPU-accelerated) or WebAssembly (CPU fallback). No images are sent to any server. Works offline after first load. Edge refinement and eraser edits reuse the cached mask - no re-inference needed.
+Two AI models are available: Fast (MODNet, ~24MB) for quick results, and HD (IS-Net, ~179MB) for best quality on complex edges. Models download once, are cached by the browser, and run locally via WebGPU (GPU-accelerated) or WebAssembly (CPU fallback). No images are sent to any server. Works offline after first load. Edge refinement and eraser edits reuse the cached mask - no re-inference needed.
 
 ## Preventing overspray
 

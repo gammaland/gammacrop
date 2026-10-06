@@ -9,7 +9,7 @@ EufyMake Studio only crops to sharp rectangles, but magnet blanks have rounded c
 ## Features
 
 - Rounded-corner cropping for 50×70, 70×50, 57×57 mm or any custom size
-- Local AI background removal (MODNet), WebGPU with WebAssembly fallback. HD mode (RMBG-1.4) is paused: that model is licensed for non-commercial use only
+- Local AI background removal: Fast (MODNet) or HD (IS-Net), WebGPU with WebAssembly fallback
 - Edge refinement (threshold / feather / erode), auto hole-fill, manual eraser
 - Safety margin: 0 by default; negative values add bleed for edge-to-edge prints with an overspray mask
 - Export at 300 / 600 / 720 / 1440 DPI with `pHYs` metadata
@@ -54,4 +54,5 @@ These are loaded at runtime and are not distributed in this repository. Each one
 
 - [Transformers.js](https://github.com/huggingface/transformers.js): Apache-2.0
 - [MODNet](https://github.com/ZHKKKe/MODNet) (`Xenova/modnet`): Apache-2.0
+- [IS-Net](https://github.com/xuebinqin/DIS) general-use weights: Apache-2.0. ONNX export from [rembg](https://github.com/danielgatis/rembg) (MIT), self-hosted at `models.gammaland3d.com`
 - Fonts from Google Fonts (Space Grotesk, Inter, JetBrains Mono): SIL Open Font License
